@@ -1,40 +1,40 @@
-Up: [Readme.md](../Readme.md),  Prev: [Section 8](sec8.md)
+Вверх: [Readme.md](../Readme.md),  Назад: [Раздел 8](sec8.md)
 
-# Interface
+# Интерфейс
 
-Interface is similar to abstract class.
-Interface defines virtual functions which are expected to be overridden by a function in another instantiable object.
+Интерфейс похож на абстрактный класс.
+Интерфейс определяет виртуальные функции, которые ожидается переопределить функцией в другом создаваемом объекте.
 
-This section provides a simple example, TComparable.
-TComparable is an interface.
-It defines functions to compare.
-They are:
+В этом разделе представлен простой пример - TComparable.
+TComparable является интерфейсом.
+Он определяет функции для сравнения.
+Это:
 
-- `t_comparable_cmp (self, other)`: It compares `self` and `other`.
-The first argument `self` is an instance on which `t_comparable_cmp` runs.
-The second argument `other` is another instance.
-This function needs to be overridden in an object which implements the interface.
-  - If `self` is equal to `other`, `t_comparable_cmp` returns 0.
-  - If `self` is greater than `other`, `t_comparable_cmp` returns 1.
-  - If `self` is less than `other`, `t_comparable_cmp` returns -1.
-  - If an error happens, `t_comparable_cmp` returns -2.
-- `t_comparable_eq (self, other)`: It returns TRUE if `self` is equal to `other`.
-Otherwise it returns FALSE.
-You need to be careful that FALSE is returned even if an error occurs.
-- `t_comparable_gt (self, other)`: It returns TRUE if `self` is greater than `other`.
-Otherwise it returns FALSE.
-- `t_comparable_lt (self, other)`: It returns TRUE if `self` is less than `other`.
-Otherwise it returns FALSE.
-- `t_comparable_ge (self, other)`: It returns TRUE if `self` is greater than or equal to `other`.
-Otherwise it returns FALSE.
-- `t_comparable_le (self, other)`: It returns TRUE if `self` is less than or equal to `other`.
-Otherwise it returns FALSE.
+- `t_comparable_cmp (self, other)`: Сравнивает `self` и `other`.
+Первый аргумент `self` - это экземпляр, на котором выполняется `t_comparable_cmp`.
+Второй аргумент `other` - это другой экземпляр.
+Эта функция должна быть переопределена в объекте, реализующем интерфейс.
+  - Если `self` равен `other`, `t_comparable_cmp` возвращает 0.
+  - Если `self` больше `other`, `t_comparable_cmp` возвращает 1.
+  - Если `self` меньше `other`, `t_comparable_cmp` возвращает -1.
+  - Если происходит ошибка, `t_comparable_cmp` возвращает -2.
+- `t_comparable_eq (self, other)`: Возвращает TRUE, если `self` равен `other`.
+В противном случае возвращает FALSE.
+Обратите внимание, что FALSE возвращается даже при возникновении ошибки.
+- `t_comparable_gt (self, other)`: Возвращает TRUE, если `self` больше `other`.
+В противном случае возвращает FALSE.
+- `t_comparable_lt (self, other)`: Возвращает TRUE, если `self` меньше `other`.
+В противном случае возвращает FALSE.
+- `t_comparable_ge (self, other)`: Возвращает TRUE, если `self` больше или равен `other`.
+В противном случае возвращает FALSE.
+- `t_comparable_le (self, other)`: Возвращает TRUE, если `self` меньше или равен `other`.
+В противном случае возвращает FALSE.
 
-Numbers and strings are comparable.
-TInt, TDouble and TStr implement TComparable interface so that they can use the functions above.
-In addition, TNumStr can use the functions because it is a child class of TStr.
+Числа и строки можно сравнивать.
+TInt, TDouble и TStr реализуют интерфейс TComparable, чтобы они могли использовать вышеперечисленные функции.
+Кроме того, TNumStr может использовать эти функции, поскольку он является дочерним классом TStr.
 
-For example,
+Например,
 
 ~~~C
 TInt *i1 = t_int_new_with_value (10);
@@ -43,23 +43,23 @@ t_comparable_eq (T_COMPARABLE (i1), T_COMPARABLE (i2)); /* => FALSE */
 t_comparable_lt (T_COMPARABLE (i1), T_COMPARABLE (i2)); /* => TRUE */
 ~~~
 
-What's the difference between interface and abstract class?
-Virtual functions in an abstract class are overridden by a function in its descendant classes.
-Virtual functions in an interface are overridden by a function in any classes.
-Compare TNumber and TComparable.
+В чем разница между интерфейсом и абстрактным классом?
+Виртуальные функции в абстрактном классе переопределяются функцией в его классах-потомках.
+Виртуальные функции в интерфейсе переопределяются функцией в любых классах.
+Сравните TNumber и TComparable.
 
-- A function `t_number_add` is overridden in TIntClass and TDoubleClass.
-It can't be overridden in TStrClass because TStr isn't a descendant of TNumber.
-- A function `t_comparable_cmp` is overridden in TIntClass, TDoubleClass and TStrClass.
+- Функция `t_number_add` переопределяется в TIntClass и TDoubleClass.
+Она не может быть переопределена в TStrClass, потому что TStr не является потомком TNumber.
+- Функция `t_comparable_cmp` переопределяется в TIntClass, TDoubleClass и TStrClass.
 
-## TComparable interface
+## Интерфейс TComparable
 
-Defining interfaces is similar to defining objects.
+Определение интерфейсов похоже на определение объектов.
 
-- Use `G_DECLARE_INTERFACE` instead of `G_DECLARE_FINAL_TYPE`.
-- Use `G_DEFINE_INTERFACE` instead of `G_DEFINE_TYPE`.
+- Используйте `G_DECLARE_INTERFACE` вместо `G_DECLARE_FINAL_TYPE`.
+- Используйте `G_DEFINE_INTERFACE` вместо `G_DEFINE_TYPE`.
 
-Now let's see the header file.
+Теперь рассмотрим заголовочный файл.
 
 ~~~C
  1 #pragma once
@@ -102,35 +102,35 @@ Now let's see the header file.
 38 t_comparable_le (TComparable *self, TComparable *other);
 ~~~
 
-- 6: `G_DECLARE_INTERFACE` macro.
-The last parameter is a prerequisite of the interface.
-The prerequisite of TComparable is GObject.
-So, any other object than the descendants of GObject, for example GVariant, can't implement TComparable.
-A prerequisite is the GType of either an interface or a class.
-This macro expands to:
-  - Declaration of `t_comparable_get_type()`.
+- 6: Макрос `G_DECLARE_INTERFACE`.
+Последний параметр - это предварительное условие интерфейса.
+Предварительным условием для TComparable является GObject.
+Таким образом, любой другой объект, кроме потомков GObject, например GVariant, не может реализовать TComparable.
+Предварительное условие - это GType интерфейса или класса.
+Этот макрос раскрывается в:
+  - Объявление `t_comparable_get_type()`.
   - `Typedef struct _TComparableInterface TComparableInterface`
-  - `T_COMPARABLE ()` macro. It casts an instance to TComparable type.
-  - `T_IS_COMPARABLE ()` macro. It checks if the type of an instance is `T_TYPE_COMPARABLE`.
-  - `T_COMPARABLE_GET_IFACE ()` macro. It gets the interface of the instance which is given as an argument.
-- 8-14: `TComparableInterface` structure.
-This is similar to a class structure.
-The first member is the parent interface.
-The parent of `TComparableInterface` is `GTypeInterface`.
-`GTypeInterface` is a base of all interface types.
-It is like a `GTypeClass` which is a base of all class types.
-`GTypeClass` is the first member of the structure `GObjectClass`.
-(See `gobject.h`. Note that `GObjectClass` is the same as `struct _GObjectClass`.)
-The next member is a pointer `arg_error` to the default signal handler of "arg-error" signal.
-This signal is emitted when the second argument of the comparison function is inappropriate.
-For example, if `self` is TInt and `other` is TStr, both of them are Comparable instance.
-But they are *not* able to compare.
-This is because `other` isn't TNumber.
-The last member `cmp` is a pointer to a comparison method.
-It is a virtual function and is expected to be overridden by a function in the object which implements the interface.
-- 22-38: Public functions.
+  - Макрос `T_COMPARABLE ()`. Он приводит экземпляр к типу TComparable.
+  - Макрос `T_IS_COMPARABLE ()`. Он проверяет, является ли тип экземпляра `T_TYPE_COMPARABLE`.
+  - Макрос `T_COMPARABLE_GET_IFACE ()`. Он получает интерфейс экземпляра, переданного в качестве аргумента.
+- 8-14: Структура `TComparableInterface`.
+Она похожа на структуру класса.
+Первый член - это родительский интерфейс.
+Родителем `TComparableInterface` является `GTypeInterface`.
+`GTypeInterface` является базой для всех типов интерфейсов.
+Это аналог `GTypeClass`, который является базой для всех типов классов.
+`GTypeClass` является первым членом структуры `GObjectClass`.
+(См. `gobject.h`. Обратите внимание, что `GObjectClass` - это то же самое, что и `struct _GObjectClass`.)
+Следующий член - это указатель `arg_error` на обработчик сигнала по умолчанию для сигнала "arg-error".
+Этот сигнал испускается, когда второй аргумент функции сравнения неподходящий.
+Например, если `self` - это TInt, а `other` - это TStr, оба они являются экземплярами Comparable.
+Но их *нельзя* сравнивать.
+Это потому, что `other` не является TNumber.
+Последний член `cmp` - это указатель на метод сравнения.
+Это виртуальная функция, которая должна быть переопределена функцией в объекте, реализующем интерфейс.
+- 22-38: Публичные функции.
 
-C file `tcomparable.c` is as follows.
+C-файл `tcomparable.c` выглядит следующим образом.
 
 ~~~C
  1 #include "tcomparable.h"
@@ -200,45 +200,45 @@ C file `tcomparable.c` is as follows.
 65 }
 ~~~
 
-- 5: `G_DEFINE_INTERFACE` macro.
-The third parameter is the type of the prerequisite.
-This macro expands to:
-  - Declaration of `t_comparable_default_init ()`.
-  - Definition of `t_comparable_get_type ()`.
-- 7-10: `arg_error_default_cb` is a default signal handler of "arg-error" signal.
-- 12- 29: `t_comparable_default_init` function.
-This function is similar to class initialization function.
-It initializes `TComparableInterface` structure.
-- 15: Assigns NULL to `cmp`.
-So, the comparison method doesn't work before an implementation class overrides it.
-- 17: Set the default signal handler of the signal "arg-error".
-- 18-28: Creates a signal "arg-error".
-- 31-38: The function `t_comparable_cmp`.
-It checks the type of `self` on the first line.
-If it isn't comparable, it logs the error message and returns -2 (error).
-If `iface->cmp` is NULL (it means the class method hasn't been overridden), then it returns -2.
-Otherwise it calls the class method and returns the value returned by the class method.
-- 40-65: Public functions.
-These five functions are based on `t_comparable_cmp`.
-Therefore, no overriding is necessary for them.
-For example, `t_comparable_eq` just calls `t_comparable_cmp`.
-And it returns TRUE if `t_comparable_cmp` returns zero.
-Otherwise it returns FALSE.
+- 5: Макрос `G_DEFINE_INTERFACE`.
+Третий параметр - это тип предварительного условия.
+Этот макрос раскрывается в:
+  - Объявление `t_comparable_default_init ()`.
+  - Определение `t_comparable_get_type ()`.
+- 7-10: `arg_error_default_cb` - обработчик сигнала по умолчанию для сигнала "arg-error".
+- 12-29: Функция `t_comparable_default_init`.
+Эта функция похожа на функцию инициализации класса.
+Она инициализирует структуру `TComparableInterface`.
+- 15: Присваивает NULL переменной `cmp`.
+Таким образом, метод сравнения не работает до тех пор, пока класс реализации не переопределит его.
+- 17: Устанавливает обработчик сигнала по умолчанию для сигнала "arg-error".
+- 18-28: Создает сигнал "arg-error".
+- 31-38: Функция `t_comparable_cmp`.
+Она проверяет тип `self` в первой строке.
+Если он не сравнимый, она записывает сообщение об ошибке и возвращает -2 (ошибка).
+Если `iface->cmp` равен NULL (это означает, что метод класса не был переопределен), то возвращается -2.
+В противном случае вызывается метод класса и возвращается значение, возвращенное методом класса.
+- 40-65: Публичные функции.
+Эти пять функций основаны на `t_comparable_cmp`.
+Поэтому их переопределение не требуется.
+Например, `t_comparable_eq` просто вызывает `t_comparable_cmp`.
+И возвращает TRUE, если `t_comparable_cmp` возвращает ноль.
+В противном случае возвращает FALSE.
 
-This program uses a signal to give the argument type error information to a user.
-This error is usually a program error rather than a run-time error.
-Using a signal to report a program error is not a good way.
-The best way is using `g_return_if_fail`.
-The reason why I made this signal is just I wanted to show how to implement a signal in interfaces.
+Эта программа использует сигнал для передачи пользователю информации об ошибке типа аргумента.
+Эта ошибка обычно является программной ошибкой, а не ошибкой времени выполнения.
+Использование сигнала для сообщения о программной ошибке - не лучший способ.
+Лучший способ - использовать `g_return_if_fail`.
+Причина, по которой я создал этот сигнал, заключается лишь в том, что я хотел показать, как реализовать сигнал в интерфейсах.
 
-## Implementing interface
+## Реализация интерфейса
 
-TInt, TDouble and TStr implement TComparable.
-First, look at TInt.
-The header file is the same as before.
-The implementation is written in C file.
+TInt, TDouble и TStr реализуют TComparable.
+Сначала рассмотрим TInt.
+Заголовочный файл такой же, как и раньше.
+Реализация написана в C-файле.
 
-`tint.c` is as follows.
+`tint.c` выглядит следующим образом.
 
 ~~~C
   1 #include "../tnumber/tnumber.h"
@@ -430,37 +430,37 @@ The implementation is written in C file.
 187 }
 ~~~
 
-- 4: It needs to include the header file of TComparable.
-- 19: Declaration of `t_comparable_interface_init ()` function.
-This declaration must be done before `G_DEFINE_TYPE_WITH_CODE` macro.
-- 21-22: `G_DEFINE_TYPE_WITH_CODE` macro.
-The last parameter is `G_IMPLEMENT_INTERFACE` macro.
-The second parameter of `G_IMPLEMENT_INTERFACE` is `t_comparable_interface_init`.
-These two macros expands to:
-  - Declaration of `t_int_class_init ()`.
-  - Declaration of `t_int_init ()`.
-  - Definition of `t_int_parent_class` static variable which points to the parent's class.
-  - Definition of `t_int_get_type ()`.
-This function includes `g_type_register_static_simple ()` and `g_type_add_interface_static ()`.
-The function `g_type_register_static_simple ()` is a convenient version of `g_type_register_static ()`.
-It registers TInt type to the type system.
-The function `g_type_add_interface_static ()` adds an interface type to an instance type.
-There is a good example in [GObject Reference Manual, Interfaces](https://docs.gtk.org/gobject/concepts.html#non-instantiatable-classed-types-interfaces).
-If you want to know how to write codes without the macros, see [`tint_without_macro.c`](../src/tcomparble/tint_without_macro.c).
-- 24-48: `t_int_comparable_cmp` is a function to compare TInt instance to TNumber instance.
-- 26-29: Checks the type of `other`.
-If the argument type is not TNumber, it emits "arg-error" signal with `g_signal_emit_by_name`.
-- 34: Converts `self` into double.
-- 35-39: Gets the value of `other` and if it is TInt then the value is casted to double.
-- 40-47: compares `s` and `o` and returns 1, 0, -1 and -2.
+- 4: Необходимо включить заголовочный файл TComparable.
+- 19: Объявление функции `t_comparable_interface_init ()`.
+Это объявление должно быть выполнено до макроса `G_DEFINE_TYPE_WITH_CODE`.
+- 21-22: Макрос `G_DEFINE_TYPE_WITH_CODE`.
+Последний параметр - это макрос `G_IMPLEMENT_INTERFACE`.
+Второй параметр `G_IMPLEMENT_INTERFACE` - это `t_comparable_interface_init`.
+Эти два макроса раскрываются в:
+  - Объявление `t_int_class_init ()`.
+  - Объявление `t_int_init ()`.
+  - Определение статической переменной `t_int_parent_class`, которая указывает на класс родителя.
+  - Определение `t_int_get_type ()`.
+Эта функция включает `g_type_register_static_simple ()` и `g_type_add_interface_static ()`.
+Функция `g_type_register_static_simple ()` - это удобная версия `g_type_register_static ()`.
+Она регистрирует тип TInt в системе типов.
+Функция `g_type_add_interface_static ()` добавляет тип интерфейса к типу экземпляра.
+Хороший пример есть в [Руководстве по GObject, Интерфейсы](https://docs.gtk.org/gobject/concepts.html#non-instantiatable-classed-types-interfaces).
+Если вы хотите узнать, как писать код без макросов, см. [`tint_without_macro.c`](../src/tcomparble/tint_without_macro.c).
+- 24-48: `t_int_comparable_cmp` - функция для сравнения экземпляра TInt с экземпляром TNumber.
+- 26-29: Проверяет тип `other`.
+Если тип аргумента не TNumber, испускается сигнал "arg-error" с помощью `g_signal_emit_by_name`.
+- 34: Преобразует `self` в double.
+- 35-39: Получает значение `other`, и если это TInt, то значение приводится к double.
+- 40-47: сравнивает `s` и `o` и возвращает 1, 0, -1 и -2.
 - 50-53: `t_comparable_interface_init`.
-This function is called in the initialization process of TInt.
-The function `t_int_comparable_cmp` is assigned to `iface->cmp`.
+Эта функция вызывается в процессе инициализации TInt.
+Функция `t_int_comparable_cmp` присваивается `iface->cmp`.
 
-`tdouble.c` is almost same as `tint.c`.
-These two objects can be compared because int is casted to double before the comparison.
+`tdouble.c` практически идентичен `tint.c`.
+Эти два объекта можно сравнивать, потому что int приводится к double перед сравнением.
 
-`tstr.c` is as follows.
+`tstr.c` выглядит следующим образом.
 
 ~~~C
   1 #include "../tstr/tstr.h"
@@ -638,33 +638,33 @@ These two objects can be compared because int is casted to double before the com
 173 }
 ~~~
 
-- 16: Declares `t_comparable_interface_init` function.
-It needs to be declared before `G_DEFINE_TYPE_WITH_CODE` macro.
-- 18-20: `G_DEFINE_TYPE_WITH_CODE` macro.
-Because TStr is derivable type, its private area (TStrPrivate) is needed.
-`G_ADD_PRIVATE` macro makes the private area.
-Be careful that there's no comma after `G_ADD_PRIVATE` macro.
+- 16: Объявляет функцию `t_comparable_interface_init`.
+Она должна быть объявлена до макроса `G_DEFINE_TYPE_WITH_CODE`.
+- 18-20: Макрос `G_DEFINE_TYPE_WITH_CODE`.
+Поскольку TStr является производным типом, необходима его приватная область (TStrPrivate).
+Макрос `G_ADD_PRIVATE` создает приватную область.
+Будьте внимательны, после макроса `G_ADD_PRIVATE` нет запятой.
 - 68-92: `t_str_comparable_cmp`.
-- 70-73: Checks the type of `other`.
-If it is not TStr, "arg-error" signal is emitted.
-- 78-79: Gets strings `s` and `o` from TStr objects `self` and `other`.
-- 81-88: Compares `s` and `o` with the C standard function `strcmp`.
-- 89-90: Frees `s` and `o`.
-- 91: Returns the result.
-- 94-97: `t_comparable_interface_init` function.
-It overrides `iface->comp` with `t_str_comparable_cmp`.
+- 70-73: Проверяет тип `other`.
+Если это не TStr, испускается сигнал "arg-error".
+- 78-79: Получает строки `s` и `o` из объектов TStr `self` и `other`.
+- 81-88: Сравнивает `s` и `o` с помощью стандартной функции C `strcmp`.
+- 89-90: Освобождает `s` и `o`.
+- 91: Возвращает результат.
+- 94-97: Функция `t_comparable_interface_init`.
+Она переопределяет `iface->comp` на `t_str_comparable_cmp`.
 
-TStr can be compared with TStr, but not with TInt nor TDouble.
-Generally, comparison is available between two same type instances.
+TStr можно сравнивать с TStr, но не с TInt или TDouble.
+В целом, сравнение доступно между двумя экземплярами одного типа.
 
-TNumStr itself doesn't implement TComparable.
-But it is a child of TStr, so it is comparable.
-The comparison is based on the alphabetical order.
-So, "a" is bigger than "b" and "three" is bigger than "two".
+TNumStr сам по себе не реализует TComparable.
+Но он является потомком TStr, поэтому он сравнимый.
+Сравнение основано на алфавитном порядке.
+Таким образом, "a" больше, чем "b", а "three" больше, чем "two".
 
-## Test program.
+## Тестовая программа.
 
-`main.c` is a test program.
+`main.c` - это тестовая программа.
 
 ~~~C
  1 #include <glib-object.h>
@@ -756,21 +756,21 @@ So, "a" is bigger than "b" and "three" is bigger than "two".
 87 }
 ~~~
 
-- 8-42: The function `t_print` has three parameters and builds an output string, then shows it to the display.
-When it builds the output, strings are surrounded with double quotes.
-- 44-58: The function `compare` compares two TComparable objects and calls `t_print` to display the result.
-- 60-87: `main` function.
-- 69-73: Creates TInt, TDouble and three TStr instances.
-They are given values.
-- 75: Compares TInt and TDouble.
-- 76-77: Compares two TStr.
-- 78: Compare TInt to TStr.
-This makes an "arg-error".
-- 80-84 Frees objects.
+- 8-42: Функция `t_print` имеет три параметра и строит выходную строку, затем отображает ее на экране.
+При построении вывода строки окружаются двойными кавычками.
+- 44-58: Функция `compare` сравнивает два объекта TComparable и вызывает `t_print` для отображения результата.
+- 60-87: Функция `main`.
+- 69-73: Создает экземпляры TInt, TDouble и три экземпляра TStr.
+Им присваиваются значения.
+- 75: Сравнивает TInt и TDouble.
+- 76-77: Сравнивает два TStr.
+- 78: Сравнивает TInt с TStr.
+Это вызывает "arg-error".
+- 80-84 Освобождает объекты.
 
-## Compilation and execution
+## Компиляция и выполнение
 
-Change your current directory to [src/tcomparable](../src/comparable).
+Перейдите в каталог [src/tcomparable](../src/comparable).
 
 ~~~
 $ cd src/tcomparable
@@ -778,7 +778,7 @@ $ meson setup _build
 $ ninja -C _build
 ~~~
 
-Then execute it.
+Затем выполните программу.
 
 ~~~
 $ _build/tcomparable
@@ -798,24 +798,24 @@ TComparable: argument error.
 124 can't compare to "one".
 ~~~
 
-## Build an interface without macros
+## Создание интерфейса без макросов
 
-We used macros such as `G_DECLARE_INTERFACE`, `G_DEFINE_INTERFACE` to build an interface.
-And `G_DEFINE_TYPE_WITH_CODE` to implement the interface.
-We can also build it without macros.
-There are three files in the `tcomparable` directory.
+Мы использовали такие макросы, как `G_DECLARE_INTERFACE`, `G_DEFINE_INTERFACE` для создания интерфейса.
+И `G_DEFINE_TYPE_WITH_CODE` для реализации интерфейса.
+Мы также можем создать его без макросов.
+В каталоге `tcomparable` есть три файла.
 
 - `tcomparable_without_macro.h`
 - `tcomparable_without_macro.c`
 - `tint_without_macro.c`
 
-They don't use macros.
-Instead, they register the interface or implementation of the interface to the type system directly.
-If you want to know that, see the source files in [src/tcomparable](../src/tcomparable).
+Они не используют макросы.
+Вместо этого они регистрируют интерфейс или реализацию интерфейса в системе типов напрямую.
+Если вы хотите узнать об этом, см. исходные файлы в [src/tcomparable](../src/tcomparable).
 
-## GObject system and object oriented languages
+## Система GObject и объектно-ориентированные языки
 
-If you know any object oriented languages, you probably have thought that GObject and the languages are similar.
-Learning such languages is very useful to know GObject system.
+Если вы знаете какие-либо объектно-ориентированные языки, вы, вероятно, заметили, что GObject и эти языки похожи.
+Изучение таких языков очень полезно для понимания системы GObject.
 
-Up: [Readme.md](../Readme.md),  Prev: [Section 8](sec8.md)
+Вверх: [Readme.md](../Readme.md),  Назад: [Раздел 8](sec8.md)
