@@ -1,44 +1,44 @@
-Up: [Readme.md](../Readme.md),  Prev: [Section 2](sec2.md), Next: [Section 4](sec4.md)
+Вверх: [Readme.md](../Readme.md),  Назад: [Раздел 2](sec2.md), Далее: [Раздел 4](sec4.md)
 
-# Type system and registration process
+# Система типов и процесс регистрации
 
-GObject is a base object.
-We don't usually use GObject itself.
-Because GObject is very simple and not enough to be used by itself in most situations.
-Instead, we use descendant objects of GObject such as many kinds of GtkWidget.
-We can rather say such derivability is the most important feature of GObject.
+GObject является базовым объектом.
+Обычно мы не используем сам GObject напрямую.
+Потому что GObject очень простой и недостаточен для самостоятельного использования в большинстве ситуаций.
+Вместо этого мы используем объекты-потомки GObject, такие как различные виды GtkWidget.
+Можно сказать, что такая наследуемость является наиболее важной особенностью GObject.
 
-This section describes how to define a child object of GObject.
+В этом разделе описывается, как определить дочерний объект GObject.
 
-## Name convention
+## Соглашение об именовании
 
-An example of this section is an object represents a real number.
-It is not so useful because we have already had double type in C language to represent real numbers.
-However, I think this example is not so bad to know the technique how to define a child object.
+Пример в этом разделе — объект, представляющий вещественное число.
+Он не так полезен, потому что в языке C уже есть тип double для представления вещественных чисел.
+Однако я думаю, что этот пример неплох для изучения техники определения дочернего объекта.
 
-First, you need to know the naming convention.
-An object name consists of name space and name.
-For example, "GObject" consists of a name space "G" and a name "Object".
-"GtkWidget" consists of a name space "Gtk" and a name "Widget".
-Let the name space be "T" and the name be "Double" of the new object.
-In this tutorial, we use "T" as a name space for all the objects we make.
+Во-первых, вам нужно знать соглашение об именовании.
+Имя объекта состоит из пространства имён и имени.
+Например, "GObject" состоит из пространства имён "G" и имени "Object".
+"GtkWidget" состоит из пространства имён "Gtk" и имени "Widget".
+Пусть пространство имён будет "T", а имя — "Double" для нового объекта.
+В этом руководстве мы используем "T" в качестве пространства имён для всех создаваемых объектов.
 
-TDouble is the object name.
-It is a child object of GObject.
-It represents a real number and the type of the number is double.
-It has some useful functions.
+TDouble — это имя объекта.
+Он является дочерним объектом GObject.
+Он представляет вещественное число, и тип числа — double.
+У него есть несколько полезных функций.
 
-## Define TDoubleClass and TDouble
+## Определение TDoubleClass и TDouble
 
-When we say "type", it can be the type in the type system or C language type.
-For example, GObject is a type name in the type system.
-And char, int or double is C language types.
-When the meaning of the word "type" is clear in the context, we just call it "type".
-But if it's ambiguous, we call it "C type" or "type in the type system".
+Когда мы говорим "тип", это может быть тип в системе типов или тип языка C.
+Например, GObject — это имя типа в системе типов.
+А char, int или double — это типы языка C.
+Когда значение слова "тип" ясно из контекста, мы просто называем его "тип".
+Но если это неоднозначно, мы называем его "тип C" или "тип в системе типов".
 
-TDouble object has the class and instance.
-The C type of the class is TDoubleClass.
-Its structure is like this:
+Объект TDouble имеет класс и экземпляр.
+Тип C для класса — это TDoubleClass.
+Его структура выглядит так:
 
 ~~~C
 typedef struct _TDoubleClass TDoubleClass;
@@ -47,15 +47,15 @@ struct _TDoubleClass {
 };
 ~~~
 
-\_TDoubleClass is a C structure tag name and TDoubleClass is "struct \_TDoubleClass".
-TDoubleClass is a newly created C type.
+\_TDoubleClass — это имя тега структуры C, а TDoubleClass — это "struct \_TDoubleClass".
+TDoubleClass — это новый созданный тип C.
 
-- Use typedef to define a class type.
-- The first member of the structure must be the parent's class structure.
+- Используйте typedef для определения типа класса.
+- Первым членом структуры должна быть структура класса родителя.
 
-TDoubleClass doesn't need its own member.
+TDoubleClass не требует собственных членов.
 
-The C type of the instance of TDouble is TDouble.
+Тип C для экземпляра TDouble — это TDouble.
 
 ~~~C
 typedef struct _TDouble TDouble;
@@ -65,38 +65,38 @@ struct _TDouble {
 };
 ~~~
 
-This is similar to the structure of the class.
+Это похоже на структуру класса.
 
-- Use typedef to define an instance type.
-- The first member of the structure must be the parent's instance structure.
+- Используйте typedef для определения типа экземпляра.
+- Первым членом структуры должна быть структура экземпляра родителя.
 
-TDouble has its own member, "value".
-It is the value of TDouble instance.
+TDouble имеет собственный член "value".
+Это значение экземпляра TDouble.
 
-The coding convention above needs to be kept all the time.
+Приведённое выше соглашение о кодировании необходимо соблюдать всегда.
 
-## Creation process of a child of GObject
+## Процесс создания потомка GObject
 
-The creation process of TDouble type is similar to the one of GObject.
+Процесс создания типа TDouble аналогичен процессу создания GObject.
 
-1. Registers TDouble type to the type system.
-2. The type system allocates memory for TDoubleClass and TDouble.
-3. Initializes TDoubleClass.
-4. Initializes TDouble.
+1. Регистрирует тип TDouble в системе типов.
+2. Система типов выделяет память для TDoubleClass и TDouble.
+3. Инициализирует TDoubleClass.
+4. Инициализирует TDouble.
 
-## Registration
+## Регистрация
 
-Usually registration is done by convenient macro such as `G_DECLARE_FINAL_TYPE` and `G_DEFINE_TYPE`.
-You can use `G_DEFINE_FINAL_TYPE` for a final type class instead of `G_DEFINE_TYPE` since GLib version 2.70.
-So you don't need to care about registration details.
-But, in this tutorial, it is important to understand GObject type system, so I want to show you the registration without macro, first.
+Обычно регистрация выполняется с помощью удобных макросов, таких как `G_DECLARE_FINAL_TYPE` и `G_DEFINE_TYPE`.
+Вы можете использовать `G_DEFINE_FINAL_TYPE` для финального типа класса вместо `G_DEFINE_TYPE` начиная с версии GLib 2.70.
+Поэтому вам не нужно беспокоиться о деталях регистрации.
+Но в этом руководстве важно понимать систему типов GObject, поэтому я хочу сначала показать вам регистрацию без макроса.
 
-There are two kinds of types, static and dynamic.
-Static type doesn't destroy its class even after all the instances have been destroyed.
-Dynamic type destroys its class when the last instance has been destroyed.
-The type of GObject is static and its descendant objects' type is also static.
-The function `g_type_register_static` registers a type of a static object.
-The following code is extracted from `gtype.h` in the Glib source files.
+Существует два вида типов: статический и динамический.
+Статический тип не уничтожает свой класс даже после того, как все экземпляры были уничтожены.
+Динамический тип уничтожает свой класс, когда последний экземпляр был уничтожен.
+Тип GObject является статическим, и тип его объектов-потомков также статический.
+Функция `g_type_register_static` регистрирует тип статического объекта.
+Следующий код извлечён из `gtype.h` в исходных файлах Glib.
 
 ~~~C
 GType
@@ -106,22 +106,22 @@ g_type_register_static (GType           parent_type,
                         GTypeFlags      flags);
 ~~~
 
-The parameters above are:
+Параметры выше:
 
-- parent_type: Parent type.
-- type_name: The name of the type.
-For example, "TDouble".
-- info: Information of the type.
-`GTypeInfo` structure will be explained below.
-- flags: Flag.
-If the type is abstract type or abstract value type, then set their flag.
-Otherwise, set it to zero.
+- parent_type: Родительский тип.
+- type_name: Имя типа.
+Например, "TDouble".
+- info: Информация о типе.
+Структура `GTypeInfo` будет объяснена ниже.
+- flags: Флаг.
+Если тип является абстрактным типом или абстрактным типом значения, то установите их флаг.
+В противном случае установите его в ноль.
 
-Because the type system maintains the parent-child relationship of the type, `g_type_register_static` has a parent type parameter.
-And the type system also keeps the information of the type.
-After the registration, `g_type_register_static` returns the type of the new object.
+Поскольку система типов поддерживает отношения родитель-потомок, `g_type_register_static` имеет параметр родительского типа.
+И система типов также хранит информацию о типе.
+После регистрации `g_type_register_static` возвращает тип нового объекта.
 
-`GTypeInfo` structure is defined as follows.
+Структура `GTypeInfo` определена следующим образом.
 
 ~~~C
 typedef struct _GTypeInfo  GTypeInfo;
@@ -149,36 +149,36 @@ struct _GTypeInfo
 };
 ~~~
 
-This structure needs to be created before the registration.
+Эту структуру необходимо создать перед регистрацией.
 
-- class_size: The size of the class.
-For example, TDouble's class size is `sizeof (TDoubleClass)`.
-- base_init, base_finalize: These functions initialize/finalize the dynamic members of the class.
-In many cases, they aren't necessary, and are assigned NULL.
-For further information, see [GObject API Reference -- BaseInitFunc](https://docs.gtk.org/gobject/callback.BaseInitFunc.html)
-and [GObject API Reference -- ClassInitFunc](https://docs.gtk.org/gobject/callback.ClassInitFunc.html).
-- class_init: Initializes static members of the class.
-Assign your class initialization function to `class_init` member.
-By convention, the name is `<name space>_<name>_class_init`, for example, `t_double_class_init`.
-- class_finalize: Finalizes the class.
-Because descendant type of GObjec is static, it doesn't have a finalize function.
-Assign NULL to `class_finalize` member.
-- class_data: User-supplied data passed to the class init/finalize functions.
-Usually NULL is assigned.
-- instance_size: The size of the instance.
-For example, TDouble's instance size is `sizeof (TDouble)`.
-- n_preallocs: This is ignored. it has been used by the old version of Glib.
-- instance_init: Initializes instance members.
-Assign your instance initialization function to `instance_init` member.
-By convention, the name is `<name space>_<name>_init`, for example, `t_double_init`.
-- value_table: This is usually only useful for fundamental types.
-If the type is descendant of GObject, assign NULL.
+- class_size: Размер класса.
+Например, размер класса TDouble — это `sizeof (TDoubleClass)`.
+- base_init, base_finalize: Эти функции инициализируют/финализируют динамические члены класса.
+В большинстве случаев они не нужны и им присваивается NULL.
+Для дополнительной информации см. [GObject API Reference -- BaseInitFunc](https://docs.gtk.org/gobject/callback.BaseInitFunc.html)
+и [GObject API Reference -- ClassInitFunc](https://docs.gtk.org/gobject/callback.ClassInitFunc.html).
+- class_init: Инициализирует статические члены класса.
+Присвойте вашу функцию инициализации класса члену `class_init`.
+По соглашению, имя — `<пространство_имён>_<имя>_class_init`, например, `t_double_class_init`.
+- class_finalize: Финализирует класс.
+Поскольку тип-потомок GObject является статическим, у него нет функции финализации.
+Присвойте NULL члену `class_finalize`.
+- class_data: Предоставленные пользователем данные, передаваемые функциям инициализации/финализации класса.
+Обычно присваивается NULL.
+- instance_size: Размер экземпляра.
+Например, размер экземпляра TDouble — это `sizeof (TDouble)`.
+- n_preallocs: Это игнорируется. Использовалось старой версией Glib.
+- instance_init: Инициализирует члены экземпляра.
+Присвойте вашу функцию инициализации экземпляра члену `instance_init`.
+По соглашению, имя — `<пространство_имён>_<имя>_init`, например, `t_double_init`.
+- value_table: Обычно это полезно только для фундаментальных типов.
+Если тип является потомком GObject, присвойте NULL.
 
-These information is kept by the type system and used when the object is created or destroyed.
-Class\_size and instance\_size are used to allocate memory for the class and instance.
-Class\_init and instance\_init functions are called when class or instance is initialized.
+Эта информация хранится системой типов и используется при создании или уничтожении объекта.
+Class\_size и instance\_size используются для выделения памяти для класса и экземпляра.
+Функции Class\_init и instance\_init вызываются при инициализации класса или экземпляра.
 
-The C program `example3.c` shows how to use `g_type_register_static`.
+C-программа `example3.c` показывает, как использовать `g_type_register_static`.
 
 ~~~C
  1 #include <glib-object.h>
@@ -230,51 +230,51 @@ The C program `example3.c` shows how to use `g_type_register_static`.
 47   GType dtype;
 48   TDouble *d;
 49 
-50   dtype = t_double_get_type (); /* or dtype = T_TYPE_DOUBLE */
+50   dtype = t_double_get_type (); /* или dtype = T_TYPE_DOUBLE */
 51   if (dtype)
-52     g_print ("Registration was a success. The type is %lx.\n", dtype);
+52     g_print ("Регистрация прошла успешно. Тип: %lx.\n", dtype);
 53   else
-54     g_print ("Registration failed.\n");
+54     g_print ("Регистрация не удалась.\n");
 55 
 56   d = g_object_new (T_TYPE_DOUBLE, NULL);
 57   if (d)
-58     g_print ("Instantiation was a success. The instance address is %p.\n", d);
+58     g_print ("Создание экземпляра прошло успешно. Адрес экземпляра: %p.\n", d);
 59   else
-60     g_print ("Instantiation failed.\n");
-61   g_object_unref (d); /* Releases the object d. */
+60     g_print ("Создание экземпляра не удалось.\n");
+61   g_object_unref (d); /* Освобождает объект d. */
 62 
 63   return 0;
 64 }
 65 
 ~~~
 
-- 16-22: A class initialization function and an instance initialization function.
-The argument `class` points the class structure and the argument `self` points the instance structure.
-They do nothing here but they are necessary for the registration.
-- 24-43: `t_double_get_type` function.
-This function returns the type of the TDouble object.
-The name of a function is always `<name space>_<name>_get_type`.
-And a macro `<NAME_SPACE>_TYPE_<NAME>` (all characters are upper case) is replaced by this function.
-Look at line 3.
-`T_TYPE_DOUBLE` is a macro replaced by `t_double_get_type ()`.
-This function has a static variable `type` to keep the type of the object.
-At the first call of this function, `type` is zero.
-Then it calls `g_type_register_static` to register the object to the type system.
-At the second or subsequent call, the function just returns `type`, because the static variable `type` has been assigned non-zero value by `g_type_register_static` and it keeps the value.
-- 30-40 : Sets `info` structure and calls `g_type_register_static`.
-- 45-64: Main function.
-Gets the type of TDouble object and displays it.
-The function `g_object_new` is used to instantiate the object.
-The GObject API reference says that the function returns a pointer to a GObject instance but it actually returns a gpointer.
-Gpointer is the same as `void *` and it can be assigned to a pointer that points any type.
-So, the statement `d = g_object_new (T_TYPE_DOUBLE, NULL);` is correct.
-If the function `g_object_new` returned `GObject *`, it would be necessary to cast the returned pointer.
-After the creation, it shows the address of the instance.
-Finally, the instance is released and destroyed with the function `g_object_unref`.
+- 16-22: Функция инициализации класса и функция инициализации экземпляра.
+Аргумент `class` указывает на структуру класса, а аргумент `self` указывает на структуру экземпляра.
+Здесь они ничего не делают, но они необходимы для регистрации.
+- 24-43: Функция `t_double_get_type`.
+Эта функция возвращает тип объекта TDouble.
+Имя функции всегда `<пространство_имён>_<имя>_get_type`.
+И макрос `<ПРОСТРАНСТВО_ИМЁН>_TYPE_<ИМЯ>` (все символы в верхнем регистре) заменяется этой функцией.
+Смотрите строку 3.
+`T_TYPE_DOUBLE` — это макрос, заменяемый на `t_double_get_type ()`.
+Эта функция имеет статическую переменную `type` для хранения типа объекта.
+При первом вызове этой функции `type` равен нулю.
+Затем она вызывает `g_type_register_static` для регистрации объекта в системе типов.
+При втором или последующем вызове функция просто возвращает `type`, потому что статической переменной `type` было присвоено ненулевое значение функцией `g_type_register_static`, и она сохраняет это значение.
+- 30-40: Устанавливает структуру `info` и вызывает `g_type_register_static`.
+- 45-64: Главная функция.
+Получает тип объекта TDouble и отображает его.
+Функция `g_object_new` используется для создания экземпляра объекта.
+В справочнике GObject API говорится, что функция возвращает указатель на экземпляр GObject, но на самом деле она возвращает gpointer.
+Gpointer — это то же самое, что `void *`, и его можно присвоить указателю, который указывает на любой тип.
+Таким образом, утверждение `d = g_object_new (T_TYPE_DOUBLE, NULL);` корректно.
+Если бы функция `g_object_new` возвращала `GObject *`, было бы необходимо привести возвращаемый указатель к нужному типу.
+После создания отображается адрес экземпляра.
+Наконец, экземпляр освобождается и уничтожается функцией `g_object_unref`.
 
-`example3.c` is in the [src/misc](../src/misc) directory.
+`example3.c` находится в каталоге [src/misc](../src/misc).
 
-Execute it.
+Выполните его.
 
 ~~~
 $ cd src/misc; _build/example3
@@ -282,32 +282,32 @@ Registration was a success. The type is 56414f164880.
 Instantiation was a success. The instance address is 0x56414f167010.
 ~~~
 
-## G_DEFINE_TYPE macro
+## Макрос G_DEFINE_TYPE
 
-The registration above is always done with the same algorithm.
-Therefore, it can be defined as a macro such as `G_DEFINE_TYPE`.
+Регистрация выше всегда выполняется по одному и тому же алгоритму.
+Поэтому её можно определить как макрос, например `G_DEFINE_TYPE`.
 
-`G_DEFINE_TYPE` does the following:
+`G_DEFINE_TYPE` делает следующее:
 
-- Declares a class initialization function.
-Its name is `<name space>_<name>_class_init`.
-For example, if the object name is `TDouble`, it is `t_double_class_init`.
-This is a declaration, not a definition.
-You need to define it.
-- Declares a instance initialization function.
-Its name is `<name space>_<name>_init`.
-For example, if the object name is `TDouble`, it is `t_double_init`.
-This is a declaration, not a definition.
-You need to define it.
-- Defines a static variable pointing to the parent class.
-Its name is `<name space>_<name>_parent_class`.
-For example, if the object name is `TDouble`, it is `t_double_parent_class`.
-- Defines a `<name space>_<name>_get_type ()` function.
-For example, if the object name is `TDouble`, it is `t_double_get_type`.
-The registration is done in this function like the previous subsection.
+- Объявляет функцию инициализации класса.
+Её имя — `<пространство_имён>_<имя>_class_init`.
+Например, если имя объекта `TDouble`, то это `t_double_class_init`.
+Это объявление, а не определение.
+Вам нужно определить её самостоятельно.
+- Объявляет функцию инициализации экземпляра.
+Её имя — `<пространство_имён>_<имя>_init`.
+Например, если имя объекта `TDouble`, то это `t_double_init`.
+Это объявление, а не определение.
+Вам нужно определить её самостоятельно.
+- Определяет статическую переменную, указывающую на родительский класс.
+Её имя — `<пространство_имён>_<имя>_parent_class`.
+Например, если имя объекта `TDouble`, то это `t_double_parent_class`.
+- Определяет функцию `<пространство_имён>_<имя>_get_type ()`.
+Например, если имя объекта `TDouble`, то это `t_double_get_type`.
+Регистрация выполняется в этой функции, как в предыдущем подразделе.
 
-Using this macro reduces lines of the program.
-See the following sample `example4.c` which works the same as `example3.c`.
+Использование этого макроса уменьшает количество строк программы.
+Смотрите следующий пример `example4.c`, который работает так же, как `example3.c`.
 
 ~~~C
  1 #include <glib-object.h>
@@ -340,17 +340,17 @@ See the following sample `example4.c` which works the same as `example3.c`.
 28   GType dtype;
 29   TDouble *d;
 30 
-31   dtype = t_double_get_type (); /* or dtype = T_TYPE_DOUBLE */
+31   dtype = t_double_get_type (); /* или dtype = T_TYPE_DOUBLE */
 32   if (dtype)
-33     g_print ("Registration was a success. The type is %lx.\n", dtype);
+33     g_print ("Регистрация прошла успешно. Тип: %lx.\n", dtype);
 34   else
-35     g_print ("Registration failed.\n");
+35     g_print ("Регистрация не удалась.\n");
 36 
 37   d = g_object_new (T_TYPE_DOUBLE, NULL);
 38   if (d)
-39     g_print ("Instantiation was a success. The instance address is %p.\n", d);
+39     g_print ("Создание экземпляра прошло успешно. Адрес экземпляра: %p.\n", d);
 40   else
-41     g_print ("Instantiation failed.\n");
+41     g_print ("Создание экземпляра не удалось.\n");
 42   g_object_unref (d);
 43 
 44   return 0;
@@ -358,10 +358,10 @@ See the following sample `example4.c` which works the same as `example3.c`.
 46 
 ~~~
 
-Thanks to `G_DEFINE_TYPE`, we are freed from writing bothersome code like `GTypeInfo` and `g_type_register_static`.
-One important thing to be careful is to follow the convention of the naming of init functions.
+Благодаря `G_DEFINE_TYPE`, мы освобождены от написания утомительного кода, такого как `GTypeInfo` и `g_type_register_static`.
+Одна важная вещь, на которую нужно обратить внимание — это соблюдать соглашение об именовании функций инициализации.
 
-Execute it.
+Выполните его.
 
 ~~~
 $ cd src/misc; _build/example4
@@ -369,50 +369,50 @@ Registration was a success. The type is 564b4ff708a0.
 Instantiation was a success. The instance address is 0x564b4ff71400.
 ~~~
 
-You can use `G_DEFINE_FINAL_TYPE` instead of `G_DEFINE_TYPE` for final type classes since GLib version 2.70.
+Вы можете использовать `G_DEFINE_FINAL_TYPE` вместо `G_DEFINE_TYPE` для финальных типов классов начиная с версии GLib 2.70.
 
-## G_DECLARE_FINAL_TYPE macro
+## Макрос G_DECLARE_FINAL_TYPE
 
-Another useful macro is `G_DECLARE_FINAL_TYPE` macro.
-This macro can be used for a final type.
-A final type doesn't have any children.
-If a type has children, it is a derivable type.
-If you want to define a derivable type object, use `G_DECLARE_DERIVABLE_TYPE` instead.
-However, you probably want to write final type objects in most cases.
+Другой полезный макрос — это макрос `G_DECLARE_FINAL_TYPE`.
+Этот макрос можно использовать для финального типа.
+Финальный тип не имеет потомков.
+Если у типа есть потомки, то это наследуемый тип.
+Если вы хотите определить наследуемый объект типа, используйте вместо этого `G_DECLARE_DERIVABLE_TYPE`.
+Однако в большинстве случаев вы, вероятно, захотите писать объекты финального типа.
 
-`G_DECLARE_FINAL_TYPE` does the following:
+`G_DECLARE_FINAL_TYPE` делает следующее:
 
-- Declares `<name space>_<name>_get_type ()` function.
-This is only declaration.
-You need to define it.
-But you can use `G_DEFINE_TYPE`, its expansion includes the definition of the function.
-So, you actually don't need to write the definition by yourself.
-- The C type of the object is defined as a typedef of structure.
-For example, if the object name is `TDouble`, then `typedef struct _TDouble TDouble` is included in the expansion.
-But you need to define the structure `struct _TDouble` by yourself before `G_DEFINE_TYPE`.
-- `<NAME SPACE>_<NAME>` macro is defined.
-For example, if the object is `TDouble` the macro is `T_DOUBLE`.
-It will be expanded to a function which casts the argument to the pointer to the object.
-For example, `T_DOUBLE (obj)` casts the type of `obj` to `TDouble *`.
-- `<NAME SPACE>_IS_<NAME>` macro is defined.
-For example, if the object is `TDouble` the macro is `T_IS_DOUBLE`.
-It will be expanded to a function which checks if the argument points the instance of `TDouble`.
-It returns true if the argument points a descendant of `TDouble`.
-- The class structure is defined.
-A final type object doesn't need to have its own member of class structure.
-The definition is like the line 11 to 14 in the `example4.c`.
+- Объявляет функцию `<пространство_имён>_<имя>_get_type ()`.
+Это только объявление.
+Вам нужно определить её самостоятельно.
+Но вы можете использовать `G_DEFINE_TYPE`, его расширение включает определение функции.
+Таким образом, вам фактически не нужно писать определение самостоятельно.
+- Тип C для объекта определяется как typedef структуры.
+Например, если имя объекта `TDouble`, то `typedef struct _TDouble TDouble` включается в расширение.
+Но вам нужно определить структуру `struct _TDouble` самостоятельно перед `G_DEFINE_TYPE`.
+- Определяется макрос `<ПРОСТРАНСТВО_ИМЁН>_<ИМЯ>`.
+Например, если объект — `TDouble`, макрос — `T_DOUBLE`.
+Он будет расширен до функции, которая приводит аргумент к указателю на объект.
+Например, `T_DOUBLE (obj)` приводит тип `obj` к `TDouble *`.
+- Определяется макрос `<ПРОСТРАНСТВО_ИМЁН>_IS_<ИМЯ>`.
+Например, если объект — `TDouble`, макрос — `T_IS_DOUBLE`.
+Он будет расширен до функции, которая проверяет, указывает ли аргумент на экземпляр `TDouble`.
+Она возвращает true, если аргумент указывает на потомка `TDouble`.
+- Определяется структура класса.
+Объект финального типа не нуждается в собственных членах структуры класса.
+Определение похоже на строки 11-14 в `example4.c`.
 
-You need to write the macro definition of the type of the object before `G_DECLARE_FINAL_TYPE`.
-For example, if the object is `TDouble`, then
+Вам нужно написать определение макроса для типа объекта перед `G_DECLARE_FINAL_TYPE`.
+Например, если объект — `TDouble`, то
 
 ~~~C
 #define T_TYPE_DOUBLE  (t_double_get_type ())
 ~~~
 
-needs to be defined before `G_DECLARE_FINAL_TYPE`.
+должно быть определено перед `G_DECLARE_FINAL_TYPE`.
 
-The C file `example5.c` uses this macro.
-It works like `example3.c` or `example4.c`.
+C-файл `example5.c` использует этот макрос.
+Он работает как `example3.c` или `example4.c`.
 
 ~~~C
  1 #include <glib-object.h>
@@ -440,27 +440,27 @@ It works like `example3.c` or `example4.c`.
 23   GType dtype;
 24   TDouble *d;
 25 
-26   dtype = t_double_get_type (); /* or dtype = T_TYPE_DOUBLE */
+26   dtype = t_double_get_type (); /* или dtype = T_TYPE_DOUBLE */
 27   if (dtype)
-28     g_print ("Registration was a success. The type is %lx.\n", dtype);
+28     g_print ("Регистрация прошла успешно. Тип: %lx.\n", dtype);
 29   else
-30     g_print ("Registration failed.\n");
+30     g_print ("Регистрация не удалась.\n");
 31 
 32   d = g_object_new (T_TYPE_DOUBLE, NULL);
 33   if (d)
-34     g_print ("Instantiation was a success. The instance address is %p.\n", d);
+34     g_print ("Создание экземпляра прошло успешно. Адрес экземпляра: %p.\n", d);
 35   else
-36     g_print ("Instantiation failed.\n");
+36     g_print ("Создание экземпляра не удалось.\n");
 37 
 38   if (T_IS_DOUBLE (d))
-39     g_print ("d is TDouble instance.\n");
+39     g_print ("d является экземпляром TDouble.\n");
 40   else
-41     g_print ("d is not TDouble instance.\n");
+41     g_print ("d не является экземпляром TDouble.\n");
 42 
 43   if (G_IS_OBJECT (d))
-44     g_print ("d is GObject instance.\n");
+44     g_print ("d является экземпляром GObject.\n");
 45   else
-46     g_print ("d is not GObject instance.\n");
+46     g_print ("d не является экземпляром GObject.\n");
 47   g_object_unref (d);
 48 
 49   return 0;
@@ -468,7 +468,7 @@ It works like `example3.c` or `example4.c`.
 51 
 ~~~
 
-Execute it.
+Выполните его.
 
 ~~~
 $ cd src/misc; _build/example5
@@ -478,10 +478,10 @@ d is TDouble instance.
 d is GObject instance.
 ~~~
 
-## Separate the file into main.c, tdouble.h and tdouble.c
+## Разделение файла на main.c, tdouble.h и tdouble.c
 
-Now it's time to separate the contents into three files, `main.c`, `tdouble.h` and `tdouble.c`.
-An object is defined by two files, a header file and C source file.
+Теперь пришло время разделить содержимое на три файла: `main.c`, `tdouble.h` и `tdouble.c`.
+Объект определяется двумя файлами: заголовочным файлом и C-файлом с исходным кодом.
 
 tdouble.h
 
@@ -503,16 +503,16 @@ tdouble.h
 15 t_double_new (double value);
 ~~~
 
-- Header files are public, i.e. it is open to any files.
-Header files include macros, which gives type information, cast and type check, and public functions.
-- 1: The directive `#pragma once` prevent the compiler from reading the header file two times or more.
-It is not officially defined but is supported widely in many compilers.
-- 5-6: `T_TYPE_DOUBLE` is public.
-`G_DECLARE_FINAL_TYPE` is expanded to public definitions.
-- 8-12: Public function declarations.
-They are getter and setter of the value of the object.
-They are called "instance methods", which are used in object-oriented languages.
-- 14-15: Object instantiation function.
+- Заголовочные файлы являются публичными, т.е. открыты для любых файлов.
+Заголовочные файлы включают макросы, которые предоставляют информацию о типе, приведение типов и проверку типов, а также публичные функции.
+- 1: Директива `#pragma once` предотвращает повторное чтение заголовочного файла компилятором два раза или более.
+Она официально не определена, но широко поддерживается многими компиляторами.
+- 5-6: `T_TYPE_DOUBLE` является публичным.
+`G_DECLARE_FINAL_TYPE` расширяется до публичных определений.
+- 8-12: Объявления публичных функций.
+Это геттер и сеттер значения объекта.
+Они называются "методами экземпляра", которые используются в объектно-ориентированных языках.
+- 14-15: Функция создания экземпляра объекта.
 
 tdouble.c
 
@@ -559,30 +559,30 @@ tdouble.c
 40 }
 ~~~
 
-- 3-6: Declaration of the instance structure.
-Since `G_DECLARE_FINAL_TYPE` macro emits `typedef struct _TDouble TDouble`, the tag name of the structure must be `_TDouble`.
-- 8: `G_DEFINE_TYPE` macro.
-- 10-16: class and instance initialization functions.
-At present, they don't do anything.
-- 18-24: Getter. The argument `value` is the pointer to a double type variable.
-Assigns the object value (`self->value`) to the variable.
-If it succeeds, it returns TRUE.
-The function `g_return_val_if_fail` is used to check the argument type.
-If the argument `self` is not TDouble type, it outputs error to the log and immediately returns FALSE.
-This function is used to report a programmer's error.
-You shouldn't use it for a runtime error.
-See [Glib API Reference -- Error Reporting](https://docs.gtk.org/glib/error-reporting.html) for further information.
-The function `g_return_val_if_fail` isn't used in static class functions, which are private, because static functions are called only from functions in the same file and the caller knows the type of parameters.
-- 26-31: Setter.
-The function `g_return_if_fail` is used to check the argument type.
-This function doesn't return any value.
-Because the type of `t_double_set_value` is `void` so no value will be returned.
-Therefore, we use `g_return_if_fail` instead of `g_return_val_if_fail`.
-- 33-40: Object instantiation function.
-It has one parameter `value` to set the value of the object.
-- 37: This function uses `g_object_new` to instantiate the object.
-The argument `T_TYPE_DOUBLE` is expanded to a function `t_double_get_type ()`.
-If this is the first call for `t_double_get_type`, the type registration will be carried out.
+- 3-6: Объявление структуры экземпляра.
+Поскольку макрос `G_DECLARE_FINAL_TYPE` выдаёт `typedef struct _TDouble TDouble`, имя тега структуры должно быть `_TDouble`.
+- 8: Макрос `G_DEFINE_TYPE`.
+- 10-16: Функции инициализации класса и экземпляра.
+В настоящее время они ничего не делают.
+- 18-24: Геттер. Аргумент `value` — это указатель на переменную типа double.
+Присваивает значение объекта (`self->value`) переменной.
+Если это удаётся, возвращает TRUE.
+Функция `g_return_val_if_fail` используется для проверки типа аргумента.
+Если аргумент `self` не является типом TDouble, она выводит ошибку в журнал и немедленно возвращает FALSE.
+Эта функция используется для сообщения об ошибке программиста.
+Вы не должны использовать её для ошибки времени выполнения.
+См. [Glib API Reference -- Error Reporting](https://docs.gtk.org/glib/error-reporting.html) для дополнительной информации.
+Функция `g_return_val_if_fail` не используется в статических функциях класса, которые являются приватными, потому что статические функции вызываются только из функций в том же файле, и вызывающая сторона знает тип параметров.
+- 26-31: Сеттер.
+Функция `g_return_if_fail` используется для проверки типа аргумента.
+Эта функция не возвращает никакого значения.
+Поскольку тип `t_double_set_value` — `void`, поэтому ничего не будет возвращено.
+Поэтому мы используем `g_return_if_fail` вместо `g_return_val_if_fail`.
+- 33-40: Функция создания экземпляра объекта.
+У неё есть один параметр `value` для установки значения объекта.
+- 37: Эта функция использует `g_object_new` для создания экземпляра объекта.
+Аргумент `T_TYPE_DOUBLE` расширяется до функции `t_double_get_type ()`.
+Если это первый вызов `t_double_get_type`, регистрация типа будет выполнена.
 
 main.c
 
@@ -597,16 +597,16 @@ main.c
  8 
  9   d = t_double_new (10.0);
 10   if (t_double_get_value (d, &value))
-11     g_print ("t_double_get_value succesfully assigned %lf to value.\n", value);
+11     g_print ("t_double_get_value успешно присвоил %lf переменной value.\n", value);
 12   else
-13     g_print ("t_double_get_value failed.\n");
+13     g_print ("t_double_get_value не удался.\n");
 14 
 15   t_double_set_value (d, -20.0);
-16   g_print ("Now, set d (tDouble object) with %lf.\n", -20.0);
+16   g_print ("Теперь установим d (объект tDouble) в %lf.\n", -20.0);
 17   if (t_double_get_value (d, &value))
-18     g_print ("t_double_get_value succesfully assigned %lf to value.\n", value);
+18     g_print ("t_double_get_value успешно присвоил %lf переменной value.\n", value);
 19   else
-20     g_print ("t_double_get_value failed.\n");
+20     g_print ("t_double_get_value не удался.\n");
 21   g_object_unref (d);
 22 
 23   return 0;
@@ -614,15 +614,15 @@ main.c
 25 
 ~~~
 
-- 2: Includes `tdouble.h`.
-This is necessary for accessing TDouble object.
-- 9: Instantiate TDouble object and set `d` to point the object.
-- 10-13: Tests the getter of the object.
-- 15-20: Tests the setter of the object.
-- 21: Releases the instance `d`.
+- 2: Включает `tdouble.h`.
+Это необходимо для доступа к объекту TDouble.
+- 9: Создаёт экземпляр объекта TDouble и устанавливает `d` для указания на объект.
+- 10-13: Тестирует геттер объекта.
+- 15-20: Тестирует сеттер объекта.
+- 21: Освобождает экземпляр `d`.
 
-The source files are located in [src/tdouble1](../src/tdouble1).
-Change your current directory to the directory above and type the following.
+Исходные файлы находятся в [src/tdouble1](../src/tdouble1).
+Перейдите в каталог выше и введите следующее.
 
 ~~~
 $ cd src/tdouble1
@@ -630,7 +630,7 @@ $ meson setup _build
 $ ninja -C _build
 ~~~
 
-Then, execute the program.
+Затем выполните программу.
 
 ~~~
 $ cd src/tdouble1; _build/example6
@@ -639,21 +639,21 @@ Now, set d (tDouble object) with -20.000000.
 t_double_get_value succesfully assigned -20.000000 to value.
 ~~~
 
-This example is very simple.
-But any object has header file and C source file like this.
-And they follow the convention.
-You probably aware of the importance of the convention.
-For the further information refer to [GObject API Reference -- Conventions](https://docs.gtk.org/gobject/concepts.html#conventions).
+Этот пример очень простой.
+Но любой объект имеет заголовочный файл и исходный файл C подобно этому.
+И они следуют соглашению.
+Вы, вероятно, осознаёте важность соглашения.
+Для дополнительной информации обратитесь к [GObject API Reference -- Conventions](https://docs.gtk.org/gobject/concepts.html#conventions).
 
-## Functions
+## Функции
 
-Functions of objects are open to other objects.
-They are like public methods in object oriented languages.
-They are actually called "instance method" in the GObject API Reference.
+Функции объектов открыты для других объектов.
+Они похожи на публичные методы в объектно-ориентированных языках.
+На самом деле они называются "методами экземпляра" в справочнике GObject API.
 
-It is natural to add calculation operators to TDouble objects because they represent real numbers.
-For example, `t_double_add` adds the value of the instance and another instance.
-Then it creates a new TDouble instance which has a value of the sum of them.
+Естественно добавить операторы вычислений к объектам TDouble, потому что они представляют вещественные числа.
+Например, `t_double_add` добавляет значение экземпляра и другого экземпляра.
+Затем он создаёт новый экземпляр TDouble, который имеет значение, равное их сумме.
 
 ~~~C
 TDouble *
@@ -668,18 +668,18 @@ t_double_add (TDouble *self, TDouble *other) {
 }
 ~~~
 
-The first argument `self` is the instance the function belongs to.
-The second argument `other` is another TDouble instance.
+Первый аргумент `self` — это экземпляр, которому принадлежит функция.
+Второй аргумент `other` — это другой экземпляр TDouble.
 
-The value of `self` can be accessed by `self->value`, but don't use `other->value` to get the value of `other`.
-Use a function `t_double_get_value` instead.
-Because `self` is an instance out of `other`.
-Generally, the structure of an object isn't open to other objects.
-When an object A access to another object B, A must use a public function provided by B.
+Значение `self` может быть доступно через `self->value`, но не используйте `other->value` для получения значения `other`.
+Используйте вместо этого функцию `t_double_get_value`.
+Потому что `self` — это экземпляр вне `other`.
+В общем, структура объекта не открыта для других объектов.
+Когда объект A получает доступ к другому объекту B, A должен использовать публичную функцию, предоставленную B.
 
-## Exercise
+## Упражнение
 
-Write functions of TDouble object for subtraction, multiplication, division and sign changing (unary minus).
-Compare your program to `tdouble.c` in [src/tdouble2](../src/tdouble2) directory.
+Напишите функции объекта TDouble для вычитания, умножения, деления и смены знака (унарный минус).
+Сравните свою программу с `tdouble.c` в каталоге [src/tdouble2](../src/tdouble2).
 
-Up: [Readme.md](../Readme.md),  Prev: [Section 2](sec2.md), Next: [Section 4](sec4.md)
+Вверх: [Readme.md](../Readme.md),  Назад: [Раздел 2](sec2.md), Далее: [Раздел 4](sec4.md)
