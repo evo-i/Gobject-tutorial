@@ -1,47 +1,47 @@
-# Properties
+# Свойства
 
-GObject system provides properties.
-Properties are values kept by instances, which is a descendant of GObject, and they are open to other instances.
-They can be accessed with their names.
+Система GObject предоставляет свойства.
+Свойства - это значения, хранящиеся в экземплярах, которые являются потомками GObject, и они доступны другим экземплярам.
+К ним можно обращаться по их именам.
 
-For example, GtkWindow has "title", "default-width", "default-height" and other properties.
-The string "title" is the name of the property.
-The name of a property is a string that begins with a letter followed by letters, digits, dash ('-') or underscore ('_').
-Dash and underscore is used as separators but they cannot be mixed.
-Using dash is more efficient than underscore.
-For example, "value", "double" and "double-value" are correct property names.
-"\_value" or "-value" are incorrect.
+Например, GtkWindow имеет свойства "title", "default-width", "default-height" и другие.
+Строка "title" - это имя свойства.
+Имя свойства - это строка, которая начинается с буквы, за которой следуют буквы, цифры, тире ('-') или подчеркивание ('_').
+Тире и подчеркивание используются в качестве разделителей, но их нельзя смешивать.
+Использование тире более эффективно, чем подчеркивания.
+Например, "value", "double" и "double-value" - корректные имена свойств.
+"\_value" или "-value" - некорректные.
 
-Properties have various types of values.
-The type of "title" property is string.
-The type of "default-width" and "default-height" is integer.
+Свойства имеют различные типы значений.
+Тип свойства "title" - строка.
+Тип "default-width" и "default-height" - целое число.
 
-Properties are set and got with functions defined in GObject.
+Свойства устанавливаются и получаются с помощью функций, определенных в GObject.
 
-- Properties can be set with several GObject functions.
-`g_object_new` and `g_object_set` are often used.
-- Properties can be get with several GObject functions.
-`g_object_get` is often used.
+- Свойства могут быть установлены несколькими функциями GObject.
+Часто используются `g_object_new` и `g_object_set`.
+- Свойства могут быть получены несколькими функциями GObject.
+Часто используется `g_object_get`.
 
-The functions above belongs to GObject, but they can be used for any descendant object of GObject.
-The following is an example of GtkWindow, which is a descendant object of GObject.
+Функции выше принадлежат GObject, но они могут быть использованы для любого объекта-потомка GObject.
+Ниже приведен пример GtkWindow, который является объектом-потомком GObject.
 
-An instance is created and its properties are set with `g_object_new`.
+Экземпляр создается и его свойства устанавливаются с помощью `g_object_new`.
 
 ~~~C
 GtkWindow *win;
 win = g_object_new (GTK_TYPE_WINDOW, "title", "Hello", "default-width", 800, "default-height", 600, NULL);
 ~~~
 
-The example above creates an instance of GtkWindow and sets the properties.
+Пример выше создает экземпляр GtkWindow и устанавливает свойства.
 
-- The "title" property is set to "Hello".
-- The "default-width" property is set to 800.
-- The "default-height" property is set to 600.
+- Свойство "title" устанавливается в "Hello".
+- Свойство "default-width" устанавливается в 800.
+- Свойство "default-height" устанавливается в 600.
 
-The last parameter of `g_object_new` is `NULL` which is the end of the list of properties.
+Последний параметр `g_object_new` - это `NULL`, который обозначает конец списка свойств.
 
-If you have already created a GtkWindow instance and you want to set its title, you can use `g_object_set`.
+Если вы уже создали экземпляр GtkWindow и хотите установить его заголовок, вы можете использовать `g_object_set`.
 
 ~~~C
 GtkWindow *win;
@@ -49,7 +49,7 @@ win = g_object_new (GTK_TYPE_WINDOW, NULL);
 g_object_set (win, "title", "Good bye", NULL);
 ~~~
 
-You can get the value of a property with `g_object_get`.
+Вы можете получить значение свойства с помощью `g_object_get`.
 
 ~~~C
 GtkWindow *win;
@@ -62,20 +62,20 @@ g_print ("%s, %d, %d\n", title, width, height);
 g_free (title);
 ~~~
 
-The rest of this section is about implementing properties in a descendant of GObject.
-It is divided into two things.
+Остаток этого раздела посвящен реализации свойств в потомке GObject.
+Он разделен на две части.
 
-- Register a property
-- Define `set_property` and `get_property` class method to complement `g_object_set` and `g_object_get`.
+- Регистрация свойства
+- Определение методов класса `set_property` и `get_property` для дополнения `g_object_set` и `g_object_get`.
 
 ## GParamSpec
 
-GParamSpec is a fundamental object.
-GParamSpec and GObject don't have parent-child relationship.
-GParamSpec has information of parameters.
-"ParamSpec" is short for "Parameter specification".
+GParamSpec - это фундаментальный объект.
+GParamSpec и GObject не имеют отношения родитель-потомок.
+GParamSpec содержит информацию о параметрах.
+"ParamSpec" - это сокращение от "Parameter specification" (спецификация параметра).
 
-For example,
+Например,
 
 ~~~C
 double_property = g_param_spec_double ("value", "val", "Double value",
@@ -83,34 +83,34 @@ double_property = g_param_spec_double ("value", "val", "Double value",
                                         G_PARAM_READWRITE);
 ~~~
 
-This function creates a GParamSpec instance, more precisely a GParamSpecDouble instance.
-GParamSpecDouble is a child of GParamSpec.
+Эта функция создает экземпляр GParamSpec, точнее экземпляр GParamSpecDouble.
+GParamSpecDouble - это потомок GParamSpec.
 
-The instance has information:
+Экземпляр содержит информацию:
 
-- The value type is double.
-The suffix of the function name, `double` in `g_param_spec_double`, implies the type.
-- The name is "value".
-- The nick name is "val".
-- The description is "Double value".
-- The minimum value is -G\_MAXDOUBLE.
-G\_MAXDOUBLE is the maximum value which can be held in a double.
-It is described in [GLib(2.68.1) Reference Manual -- G\_MAXDOUBLE and G\_MINDOUBLE](https://developer-old.gnome.org/glib/stable/glib-Basic-Types.html#G-MINDOUBLE:CAPS).
-You might think the lowest value of double is G\_MINDOUBLE, but it's not.
-G\_MINDOUBLE is the minimum positive value which can be held in a double.
-- The maximum value is G\_MAXDOUBLE.
-- The default value is 0.0.
-- `G_PARAM_READWRITE` is a flag.
-`G_PARAM_READWRITE` means that the parameter is readable and writable.
+- Тип значения - double.
+Суффикс имени функции, `double` в `g_param_spec_double`, указывает на тип.
+- Имя - "value".
+- Краткое имя - "val".
+- Описание - "Double value".
+- Минимальное значение - -G\_MAXDOUBLE.
+G\_MAXDOUBLE - это максимальное значение, которое может храниться в double.
+Это описано в [GLib(2.68.1) Reference Manual -- G\_MAXDOUBLE and G\_MINDOUBLE](https://developer-old.gnome.org/glib/stable/glib-Basic-Types.html#G-MINDOUBLE:CAPS).
+Вы можете подумать, что наименьшее значение double - это G\_MINDOUBLE, но это не так.
+G\_MINDOUBLE - это минимальное положительное значение, которое может храниться в double.
+- Максимальное значение - G\_MAXDOUBLE.
+- Значение по умолчанию - 0.0.
+- `G_PARAM_READWRITE` - это флаг.
+`G_PARAM_READWRITE` означает, что параметр доступен для чтения и записи.
 
-For further information, refer to the GObject API reference.
+Для получения дополнительной информации обратитесь к справочнику API GObject.
 
 - [GParamSpec and its subclasses](https://docs.gtk.org/gobject/index.html#classes)
 - [g\_param\_spec\_double and similar functions](https://docs.gtk.org/gobject/index.html#functions)
 - [GValue](https://docs.gtk.org/gobject/struct.Value.html)
 
-GParamSpec is used for the registration for GObject properties.
-This is extracted from tdouble.c in [src/tdouble6](tdouble6).
+GParamSpec используется для регистрации свойств GObject.
+Это извлечено из tdouble.c в [src/tdouble6](tdouble6).
 
 ~~~C
 #define PROP_DOUBLE 1
@@ -127,89 +127,89 @@ t_double_class_init (TDoubleClass *class) {
 }
 ~~~
 
-The variable `double_property` is static.
-GParamSpec instance is assigned to `double_property`.
+Переменная `double_property` статическая.
+Экземпляр GParamSpec присваивается `double_property`.
 
-The function `g_object_class_install_property` installs a property.
-It must be called after `set_property` and `get_property` methods are overridden.
-These methods will be explained later.
-The arguments are TDoubleClass class, PROP\_DOUBLE (property id) and GParamSpec instance.
-Property id is used to identify the property in `tdouble.c`.
-It is a positive integer.
+Функция `g_object_class_install_property` устанавливает свойство.
+Она должна быть вызвана после переопределения методов `set_property` и `get_property`.
+Эти методы будут объяснены позже.
+Аргументы - это класс TDoubleClass, PROP\_DOUBLE (идентификатор свойства) и экземпляр GParamSpec.
+Идентификатор свойства используется для идентификации свойства в `tdouble.c`.
+Это положительное целое число.
 
-## Overriding set\_property and get\_property class methods
+## Переопределение методов класса set\_property и get\_property
 
-Property values vary from instance to instance.
-Therefore, the value is stored to each instance of the object.
+Значения свойств различаются от экземпляра к экземпляру.
+Поэтому значение сохраняется в каждом экземпляре объекта.
 
-The function `g_object_set` is given a value as an argument and stores the value.
-But how does `g_object_set` know the instance to store?
-It is compiled before the object is made.
-So, it doesn't know where to store the value at all.
-That part needs to be programmed by the writer of the object with overriding.
+Функция `g_object_set` принимает значение в качестве аргумента и сохраняет его.
+Но как `g_object_set` узнает, в какой экземпляр сохранять?
+Она компилируется до создания объекта.
+Таким образом, она вообще не знает, куда сохранить значение.
+Эта часть должна быть запрограммирована автором объекта с помощью переопределения.
 
-The function `g_object_set` first checks the property and value, then it creates GValue (generic value) from the value.
-And it calls a function pointed by `set_property` in the class.
-Look at the diagram below.
+Функция `g_object_set` сначала проверяет свойство и значение, затем создает GValue (общее значение) из значения.
+И затем она вызывает функцию, на которую указывает `set_property` в классе.
+Посмотрите на диаграмму ниже.
 
 ![Overriding `set_property` class method](../image/class_property1.png){width=15cm height=7.5cm}
 
-The member `set_property` in GObjectClass class points `g_object_do_set_property` in GObject program, which is made by compiling `gobject.c`.
-The GObjectClass part of the TDoubleClass structure (it is the same as TDoubleClass because TDoubleClass doesn't have its own area) is initialized by copying from the contents of GObjectClass.
-Therefore, `set_property` in TDoubleClass class points `g_object_do_set_property` in GObject program.
-But `g_object_do_set_property` doesn't store the value to the TDouble instance.
-The writer of TDouble object makes `t_double_set_property` function in `tdouble.c`.
-And assigns the address of `t_double_set_property` to `set_property` in TDoubleClass class.
-It is shown with a red curve in the diagram.
-As a result, `g_object_set` calls `t_double_set_property` instead of `g_object_do_set_property` (red dotted curve) and the value will be stored in the TDouble instance.
-See the function `t_double_class_init` above.
-It changes the member `gobject_class->set_property` to point the function `t_double_set_property`.
-The function `g_object_set` sees the TDoubleClass and call the function pointed by the member `set_property`.
+Элемент `set_property` в классе GObjectClass указывает на `g_object_do_set_property` в программе GObject, которая создается компиляцией `gobject.c`.
+Часть GObjectClass структуры TDoubleClass (она такая же, как TDoubleClass, потому что TDoubleClass не имеет собственной области) инициализируется копированием содержимого GObjectClass.
+Поэтому `set_property` в классе TDoubleClass указывает на `g_object_do_set_property` в программе GObject.
+Но `g_object_do_set_property` не сохраняет значение в экземпляр TDouble.
+Автор объекта TDouble создает функцию `t_double_set_property` в `tdouble.c`.
+И присваивает адрес `t_double_set_property` элементу `set_property` в классе TDoubleClass.
+Это показано красной кривой на диаграмме.
+В результате `g_object_set` вызывает `t_double_set_property` вместо `g_object_do_set_property` (красная пунктирная кривая), и значение будет сохранено в экземпляре TDouble.
+Посмотрите на функцию `t_double_class_init` выше.
+Она изменяет элемент `gobject_class->set_property` так, чтобы он указывал на функцию `t_double_set_property`.
+Функция `g_object_set` смотрит на TDoubleClass и вызывает функцию, на которую указывает элемент `set_property`.
 
-The program of `t_double_set_property` and `t_double_get_property` will shown later.
+Программа `t_double_set_property` и `t_double_get_property` будет показана позже.
 
 ## GValue
 
-GValue is generic value.
-GValue consists of type and value.
+GValue - это общее значение.
+GValue состоит из типа и значения.
 
-The type is any Gtype.
-The table below shows some GType, but not all.
+Тип может быть любым GType.
+Таблица ниже показывает некоторые GType, но не все.
 
-|GType           |C type|type name |notes                  |
-|:---------------|:-----|:---------|:----------------------|
-|G\_TYPE\_CHAR   |char  |gchar     |                       |
-|G\_TYPE\_BOOLEAN|int   |gboolean  |                       |
-|G\_TYPE\_INT    |int   |gint      |                       |
-|G\_TYPE\_FLOAT  |float |gfloat    |                       |
-|G\_TYPE\_DOUBLE |double|gdouble   |                       |
-|G\_TYPE\_STRING |      |gchararray|null-terminated Cstring|
-|G\_TYPE\_PARAM  |      |GParam    |GParamSpec             |
-|G\_TYPE\_OBJECT |      |GObject   |                       |
-|G\_TYPE\_VARIANT|      |GVariant  |                       |
+|GType           |C type|type name |примечания                |
+|:---------------|:-----|:---------|:-------------------------|
+|G\_TYPE\_CHAR   |char  |gchar     |                          |
+|G\_TYPE\_BOOLEAN|int   |gboolean  |                          |
+|G\_TYPE\_INT    |int   |gint      |                          |
+|G\_TYPE\_FLOAT  |float |gfloat    |                          |
+|G\_TYPE\_DOUBLE |double|gdouble   |                          |
+|G\_TYPE\_STRING |      |gchararray|C-строка с нулевым окончанием|
+|G\_TYPE\_PARAM  |      |GParam    |GParamSpec                |
+|G\_TYPE\_OBJECT |      |GObject   |                          |
+|G\_TYPE\_VARIANT|      |GVariant  |                          |
 
-If the type of a GValue `value` is `G_TYPE_DOUBLE`, `value` can be get with `g_value_get_double` function.
+Если тип GValue `value` - это `G_TYPE_DOUBLE`, `value` можно получить с помощью функции `g_value_get_double`.
 
 ~~~C
 GValue value;
-value = ... ... ... (a GValue object is assigned. Its type is double.)
+value = ... ... ... (объект GValue присвоен. Его тип - double.)
 double v;
 v = g_value_get_double (&value);
 ~~~
 
-Conversely, you can set GValue `value` with `g_value_set_double`.
+И наоборот, вы можете установить GValue `value` с помощью `g_value_set_double`.
 
 ~~~C
 g_value_set_double (value, 123.45);
 ~~~
 
-Refer to [GObject API Reference -- GValue](https://docs.gtk.org/gobject/struct.Value.html) for further information.
+Обратитесь к [GObject API Reference -- GValue](https://docs.gtk.org/gobject/struct.Value.html) для получения дополнительной информации.
 
-## t\_double\_set\_property and t\_double\_get\_property
+## t\_double\_set\_property и t\_double\_get\_property
 
-`g_object_set` makes GValue from the value of the property given as an argument.
-And calls a function pointed by `set_property` in the class.
-The function is declared in GObjectClass structure.
+`g_object_set` создает GValue из значения свойства, переданного в качестве аргумента.
+И вызывает функцию, на которую указывает `set_property` в классе.
+Функция объявлена в структуре GObjectClass.
 
 ~~~C
 struct  _GObjectClass
@@ -230,82 +230,82 @@ struct  _GObjectClass
 };
 ~~~
 
-`t_double_set_property` just get the value from GValue `value` and store it to the TDouble instance.
+`t_double_set_property` просто получает значение из GValue `value` и сохраняет его в экземпляр TDouble.
 
 @@@include
 tdouble6/tdouble.c t_double_set_property
 @@@
 
-- 3: Casts `object` to TDouble object `self`.
-- 6: Set `self->value`.
-The assigned value is got with `g_value_get_double` function.
+- 3: Приводит `object` к объекту TDouble `self`.
+- 6: Устанавливает `self->value`.
+Присваиваемое значение получается с помощью функции `g_value_get_double`.
 
-In the same way, `t_double_get_property` stores `self->value` to GValue.
+Аналогично, `t_double_get_property` сохраняет `self->value` в GValue.
 
 @@@include
 tdouble6/tdouble.c t_double_get_property
 @@@
 
-## Notify signal
+## Сигнал notify
 
-GObject emits "notify" signal when a property is set.
-When you connect "notify" signal to your handler, you can specify a detail which is the name of the property.
-The detail is added to the signal name with the delimiter "::".
+GObject испускает сигнал "notify" при установке свойства.
+Когда вы подключаете сигнал "notify" к вашему обработчику, вы можете указать деталь, которая является именем свойства.
+Деталь добавляется к имени сигнала с разделителем "::".
 
 ~~~C
 g_signal_connect (G_OBJECT (d1), "notify::value", G_CALLBACK (notify_cb), NULL);
 ~~~
 
-If you don't specify details, the handler is called whenever any properties are set.
-So, usually the detail is set.
+Если вы не указываете детали, обработчик вызывается при установке любых свойств.
+Поэтому обычно деталь устанавливается.
 
-Notify signal doesn't mean that the value of the property is changed.
-It is emitted even if the same value is set.
-You might want to emit the notify signal only when the property is actually changed.
-In that case, you define the GPramSpec with `G_PARAM_EXPLICIT_NOTIFY` flag.
-Then, the notify signal isn't emitted automatically.
-Instead you call `g_object_notify_by_pspec` function to emit "notify" signal explicitly when the value of the property is actually changed.
+Сигнал notify не означает, что значение свойства изменилось.
+Он испускается даже если устанавливается то же самое значение.
+Вы можете захотеть испускать сигнал notify только когда свойство действительно изменяется.
+В этом случае вы определяете GPramSpec с флагом `G_PARAM_EXPLICIT_NOTIFY`.
+Тогда сигнал notify не испускается автоматически.
+Вместо этого вы вызываете функцию `g_object_notify_by_pspec` для явного испускания сигнала "notify", когда значение свойства действительно изменяется.
 
-It is possible to make setter and getter for the property.
-But if you just set the instance member in your setter, notify signal isn't emitted.
+Возможно создать setter и getter для свойства.
+Но если вы просто устанавливаете элемент экземпляра в вашем setter, сигнал notify не испускается.
 
 ~~~C
 void
 t_double_set_value (TDouble *self, double value) {
   g_return_if_fail (T_IS_DOUBLE (self));
 
-  self->value = value; /* Just set d->value. No "notify" signal is emitted. */
+  self->value = value; /* Просто устанавливается d->value. Сигнал "notify" не испускается. */
 }
 ~~~
 
-Users must be confused if they want to catch the "notify" signal.
-One solution is use `g_object_set` in your setter.
-Then, notify signal will be emitted even if a user uses the setter function.
+Пользователи будут озадачены, если захотят поймать сигнал "notify".
+Одно решение - использовать `g_object_set` в вашем setter.
+Тогда сигнал notify будет испущен, даже если пользователь использует функцию setter.
 
 ~~~C
 void
 t_double_set_value (TDouble *d, double value) {
   g_return_if_fail (T_IS_DOUBLE (d));
 
-  g_object_set (d, "value", value, NULL); /* Use g_object_set. "notify" signal will be emitted. */
+  g_object_set (d, "value", value, NULL); /* Используется g_object_set. Сигнал "notify" будет испущен. */
 }
 ~~~
 
-The other solution is use `g_object_notify_by_pspec` to emit the signal explicitly.
-Anyway, if you make a setter for your property, be careful about notify signal.
+Другое решение - использовать `g_object_notify_by_pspec` для явного испускания сигнала.
+В любом случае, если вы создаете setter для вашего свойства, будьте осторожны с сигналом notify.
 
-## Define more than one property
+## Определение более чем одного свойства
 
-If you define more than one property, use an array of property id.
-It is good for you to see Gtk source files such as `gtklabel.c`.
-GtkLabel has 18 properties.
+Если вы определяете более одного свойства, используйте массив идентификаторов свойств.
+Вам будет полезно посмотреть исходные файлы Gtk, такие как `gtklabel.c`.
+GtkLabel имеет 18 свойств.
 
-There's an example in [src/tdouble6](tdouble6) directory.
+Есть пример в директории [src/tdouble6](tdouble6).
 
-## Exercise
+## Упражнение
 
-Make TInt object.
-It is like TDouble but the value type is int.
-Define "div-by-zero" signal and "value" property.
+Создайте объект TInt.
+Он похож на TDouble, но тип значения - int.
+Определите сигнал "div-by-zero" и свойство "value".
 
-Compare your answer to the files in [src/tint](tint) directory.
+Сравните ваш ответ с файлами в директории [src/tint](tint).
