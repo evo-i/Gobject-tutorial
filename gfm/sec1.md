@@ -1,72 +1,72 @@
-Up: [Readme.md](../Readme.md),  Next: [Section 2](sec2.md)
+Вверх: [Readme.md](../Readme.md),  Далее: [Раздел 2](sec2.md)
 
-# Prerequisites and License
+# Предварительные требования и лицензия
 
-## Prerequisites
+## Предварительные требования
 
-### Tutorial document
+### Документация учебника
 
-This tutorial is about GObject libraries.
-It is originally used on Linux with C compiler, but now it is used more widely, on windows and macOS, with Vala, python and so on.
-However, this tutorial describes only _C programs on Linux_.
+Этот учебник посвящен библиотекам GObject.
+Изначально они использовались на Linux с компилятором C, но теперь используются более широко: в Windows и macOS, с Vala, Python и т.д.
+Однако этот учебник описывает только _программы на C для Linux_.
 
-If you want to try to compile the examples in the tutorial, you need:
+Если вы хотите скомпилировать примеры из учебника, вам потребуется:
 
-- PC with Linux distribution like Ubuntu, Debian and so on.
+- ПК с дистрибутивом Linux, таким как Ubuntu, Debian и т.д.
 - Gcc
-- GLib. The version at the time this document is described is 2.76.1.
-Some example program needs version 2.74 or higher.
-But they work on the older version if you replace the new function or macro with the old one.
+- GLib. Версия на момент написания этого документа — 2.76.1.
+Некоторые примеры программ требуют версию 2.74 или выше.
+Но они будут работать на более старых версиях, если вы замените новую функцию или макрос на старую.
 - pkg-config
-- meson and ninja
+- meson и ninja
 
-Common Linux distributions has GLib, which is enough for you to compile the examples in this repository.
+Обычные дистрибутивы Linux имеют GLib, которой достаточно для компиляции примеров из этого репозитория.
 
-### Tools to make GFM, HTML and PDF files
+### Инструменты для создания файлов GFM, HTML и PDF
 
-This repository includes ruby programs.
-They are used to create Markdown(GFM) files, HTML files, LaTeX files and a PDF file.
+Этот репозиторий включает программы на Ruby.
+Они используются для создания файлов Markdown (GFM), HTML, LaTeX и PDF.
 
-You need:
+Вам потребуется:
 
-- Linux distribution like Ubuntu.
-- Ruby programming language.
-There are two ways to install it.
-One is installing the distribution's package.
-The other is using rbenv and ruby-build.
-If you want to use the latest version of Ruby, you will need rbenv and ruby-build.
+- Дистрибутив Linux, такой как Ubuntu.
+- Язык программирования Ruby.
+Существует два способа его установки.
+Один — установка пакета дистрибутива.
+Другой — использование rbenv и ruby-build.
+Если вы хотите использовать последнюю версию Ruby, вам понадобятся rbenv и ruby-build.
 - Rake.
-It is a gem, which is a library written in ruby.
-Ruby package includes Rake gem as a standard library so you don't need to install it separately.
+Это gem — библиотека, написанная на Ruby.
+Пакет Ruby включает Rake gem в качестве стандартной библиотеки, поэтому устанавливать его отдельно не нужно.
 
-## License
+## Лицензия
 
 Copyright (C) 2021-2022  ToshioCP (Toshio Sekiya)
 
-GObject tutorial repository contains the tutorial document and software such as converters, generators and controllers.
-All of them make up the 'GObject tutorial' package.
-This package is simply called 'GObject tutorial' in the following description.
+Репозиторий учебника GObject содержит документацию и программное обеспечение, такое как конвертеры, генераторы и контроллеры.
+Всё это составляет пакет «Учебник GObject».
+В дальнейшем этот пакет будет называться просто «Учебник GObject».
 
-'GObject tutorial' is free; you can redistribute it and/or modify it under the terms of the following licenses.
+«Учебник GObject» является свободным; вы можете распространять и/или изменять его на условиях следующих лицензий.
 
-- The license of documents in GObject tutorial is the GNU Free Documentation License as published by the Free Software Foundation;
-either version 1.3 of the License or, at your opinion, any later version.
-The documents are Markdown, HTML and image files.
-If you generate a PDF file by running `rake pdf`, it is also included by the documents.
-- The license of programs in GObject tutorial is the GNU General Public License as published by the Free Software Foundation;
-either version 3 of the License or, at your option, any later version.
-The programs are written in C, Ruby and other languages.
+- Лицензия документов в Учебнике GObject — это GNU Free Documentation License, опубликованная Free Software Foundation;
+версия 1.3 лицензии или, по вашему усмотрению, любая более поздняя версия.
+Документами являются файлы Markdown, HTML и изображения.
+Если вы сгенерируете PDF-файл, выполнив команду `rake pdf`, он также будет включен в документы.
+- Лицензия программ в Учебнике GObject — это GNU General Public License, опубликованная Free Software Foundation;
+версия 3 лицензии или, по вашему усмотрению, любая более поздняя версия.
+Программы написаны на C, Ruby и других языках.
 
-GObject tutorial is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU License web pages for more details.
+Учебник GObject распространяется в надежде, что он будет полезен,
+но БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ; даже без подразумеваемой гарантии ТОВАРНОГО СОСТОЯНИЯ или ПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЁННОЙ ЦЕЛИ.
+Для получения более подробной информации смотрите веб-страницы лицензий GNU.
 
 - [GNU Free Documentation License](https://www.gnu.org/licenses/fdl-1.3.html)
 - [GNU General Public License](https://www.gnu.org/licenses/gpl-3.0.html)
 
-The licenses above is effective since 15/August/2023.
-Before that, GPL covered all the contents of the GObject tutorial.
-But GFDL1.3 is more appropriate for documents so the license was changed.
-The license above is the only effective license since 15/August/2023.
+Указанные выше лицензии действуют с 15 августа 2023 года.
+До этого GPL охватывала всё содержимое Учебника GObject.
+Но GFDL 1.3 более подходит для документов, поэтому лицензия была изменена.
+Указанная выше лицензия является единственной действующей лицензией с 15 августа 2023 года.
 
-Up: [Readme.md](../Readme.md),  Next: [Section 2](sec2.md)
+Вверх: [Readme.md](../Readme.md),  Далее: [Раздел 2](sec2.md)
