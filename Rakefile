@@ -92,13 +92,13 @@ srcfiles.each do |src|
     i = get_sec_num(src)
     if secfiles.include?(src)
       if secfiles.size == 1
-        nav = "Up: [Readme.md](../Readme.md)\n"
+        nav = "Вверх: [Readme.md](../Readme.md)\n"
       elsif i == 1
-        nav = "Up: [Readme.md](../Readme.md),  Next: [Section 2](sec2.md)\n"
+        nav = "Вверх: [Readme.md](../Readme.md),  Далее: [Раздел 2](sec2.md)\n"
       elsif i == secfiles.size
-        nav = "Up: [Readme.md](../Readme.md),  Prev: [Section #{i-1}](sec#{i-1}.md)\n"
+        nav = "Вверх: [Readme.md](../Readme.md),  Назад: [Раздел #{i-1}](sec#{i-1}.md)\n"
       else
-        nav = "Up: [Readme.md](../Readme.md),  Prev: [Section #{i-1}](sec#{i-1}.md), Next: [Section #{i+1}](sec#{i+1}.md)\n"
+        nav = "Вверх: [Readme.md](../Readme.md),  Назад: [Раздел #{i-1}](sec#{i-1}.md), Далее: [Раздел #{i+1}](sec#{i+1}.md)\n"
       end
       File.write(t.name, nav + "\n" + File.read(dst) + "\n" + nav)
     end

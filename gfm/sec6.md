@@ -1,4 +1,4 @@
-Up: [Readme.md](../Readme.md),  Prev: [Section 5](sec5.md), Next: [Section 7](sec7.md)
+Вверх: [Readme.md](../Readme.md),  Назад: [Раздел 5](sec5.md), Далее: [Раздел 7](sec7.md)
 
 # Производный тип и абстрактный тип
 
@@ -807,4 +807,4 @@ TIntClass не имеет собственной области.
 
 ![TIntClass initialization](../image/tintclass_init.png)
 
-Up: [Readme.md](../Readme.md),  Prev: [Section 5](sec5.md), Next: [Section 7](sec7.md)
+Вверх: [Readme.md](../Readme.md),  Назад: [Раздел 5](sec5.md), Далее: [Раздел 7](sec7.md)

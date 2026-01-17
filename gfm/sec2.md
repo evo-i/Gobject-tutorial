@@ -1,4 +1,4 @@
-Up: [Readme.md](../Readme.md),  Prev: [Section 1](sec1.md), Next: [Section 3](sec3.md)
+Вверх: [Readme.md](../Readme.md),  Назад: [Раздел 1](sec1.md), Далее: [Раздел 3](sec3.md)
 
 # GObject
 
@@ -282,4 +282,4 @@ Therefore, the access to the same address may cause a segmentation error.
 Когда вы пишете код для определения дочернего объекта GObject, важно понимать процесс выше.
 Подробный процесс будет объяснен в последующих разделах.
 
-Up: [Readme.md](../Readme.md),  Prev: [Section 1](sec1.md), Next: [Section 3](sec3.md)
+Вверх: [Readme.md](../Readme.md),  Назад: [Раздел 1](sec1.md), Далее: [Раздел 3](sec3.md)

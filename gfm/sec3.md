@@ -1,4 +1,4 @@
-Up: [Readme.md](../Readme.md),  Prev: [Section 2](sec2.md), Next: [Section 4](sec4.md)
+Вверх: [Readme.md](../Readme.md),  Назад: [Раздел 2](sec2.md), Далее: [Раздел 4](sec4.md)
 
 # Система типов и процесс регистрации
 
@@ -682,4 +682,4 @@ t_double_add (TDouble *self, TDouble *other) {
 Напишите функции объекта TDouble для вычитания, умножения, деления и изменения знака (унарный минус).
 Сравните вашу программу с `tdouble.c` в каталоге [src/tdouble2](../src/tdouble2).
 
-Up: [Readme.md](../Readme.md),  Prev: [Section 2](sec2.md), Next: [Section 4](sec4.md)
+Вверх: [Readme.md](../Readme.md),  Назад: [Раздел 2](sec2.md), Далее: [Раздел 4](sec4.md)

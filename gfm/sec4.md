@@ -1,4 +1,4 @@
-Up: [Readme.md](../Readme.md),  Prev: [Section 3](sec3.md), Next: [Section 5](sec5.md)
+Вверх: [Readme.md](../Readme.md),  Назад: [Раздел 3](sec3.md), Далее: [Раздел 5](sec5.md)
 
 # Сигналы
 
@@ -591,4 +591,4 @@ Error has happened in main.c and an error message has been displayed.
 
 Другие флаги сигналов описаны в [GObject API Reference](https://docs.gtk.org/gobject/flags.SignalFlags.html).
 
-Up: [Readme.md](../Readme.md),  Prev: [Section 3](sec3.md), Next: [Section 5](sec5.md)
+Вверх: [Readme.md](../Readme.md),  Назад: [Раздел 3](sec3.md), Далее: [Раздел 5](sec5.md)

@@ -116,19 +116,19 @@ $body$
   if home == nil
     template = template.sub(/@@@home/,'')
   else
-    template = template.sub(/@@@home/, "<li class=\"nav-item\">\n<a class=\"nav-link\" href=\"#{home}\">Home</a>\n</li>\n")
+    template = template.sub(/@@@home/, "<li class=\"nav-item\">\n<a class=\"nav-link\" href=\"#{home}\">Главная</a>\n</li>\n")
   end
   if sec_prev == nil
     template = template.sub(/@@@prev/,'')
   else
     i = sec_prev.match(/\d+/).to_a[0]
-    template = template.sub(/@@@prev/, "<li class=\"nav-item\">\n<a class=\"nav-link\" href=\"#{sec_prev}\">Prev: section#{i}</a>\n</li>\n")
+    template = template.sub(/@@@prev/, "<li class=\"nav-item\">\n<a class=\"nav-link\" href=\"#{sec_prev}\">Назад: раздел#{i}</a>\n</li>\n")
   end
   if sec_next == nil
     template = template.sub(/@@@next/,'')
   else
     i = sec_next.match(/\d+/).to_a[0]
-    template = template.sub(/@@@next/, "<li class=\"nav-item\">\n<a class=\"nav-link\" href=\"#{sec_next}\">Next: section#{i}</a>\n</li>\n")
+    template = template.sub(/@@@next/, "<li class=\"nav-item\">\n<a class=\"nav-link\" href=\"#{sec_next}\">Далее: раздел#{i}</a>\n</li>\n")
   end
   File.write("docs/template.html", template)
 end

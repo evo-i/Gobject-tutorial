@@ -1,4 +1,4 @@
-Up: [Readme.md](../Readme.md),  Prev: [Section 4](sec4.md), Next: [Section 6](sec6.md)
+Вверх: [Readme.md](../Readme.md),  Назад: [Раздел 4](sec4.md), Далее: [Раздел 6](sec6.md)
 
 # Свойства
 
@@ -329,4 +329,4 @@ GtkLabel имеет 18 свойств.
 
 Сравните ваш ответ с файлами в директории [src/tint](../src/tint).
 
-Up: [Readme.md](../Readme.md),  Prev: [Section 4](sec4.md), Next: [Section 6](sec6.md)
+Вверх: [Readme.md](../Readme.md),  Назад: [Раздел 4](sec4.md), Далее: [Раздел 6](sec6.md)

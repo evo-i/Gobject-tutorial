@@ -1,4 +1,4 @@
-Up: [Readme.md](../Readme.md),  Prev: [Section 8](sec8.md)
+Вверх: [Readme.md](../Readme.md),  Назад: [Раздел 8](sec8.md)
 
 # Интерфейс
 
@@ -818,4 +818,4 @@ TComparable: argument error.
 Если вы знаете какие-либо объектно-ориентированные языки, вы, вероятно, подумали, что GObject и эти языки похожи.
 Изучение таких языков очень полезно для понимания системы GObject.
 
-Up: [Readme.md](../Readme.md),  Prev: [Section 8](sec8.md)
+Вверх: [Readme.md](../Readme.md),  Назад: [Раздел 8](sec8.md)

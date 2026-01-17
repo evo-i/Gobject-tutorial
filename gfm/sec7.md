@@ -1,4 +1,4 @@
-Up: [Readme.md](../Readme.md),  Prev: [Section 6](sec6.md), Next: [Section 8](sec8.md)
+Вверх: [Readme.md](../Readme.md),  Назад: [Раздел 6](sec6.md), Далее: [Раздел 8](sec8.md)
 
 # Производный и не абстрактный тип
 
@@ -494,4 +494,4 @@ C файл `tstr.c` для TStr выглядит следующим образо
 - Определите функции инициализации класса и экземпляра.
 
 
-Up: [Readme.md](../Readme.md),  Prev: [Section 6](sec6.md), Next: [Section 8](sec8.md)
+Вверх: [Readme.md](../Readme.md),  Назад: [Раздел 6](sec6.md), Далее: [Раздел 8](sec8.md)
