@@ -1,17 +1,17 @@
 # GObject
 
-## Class and instance
+## Класс и экземпляр
 
-GObject instance is created with `g_object_new` function.
-GObject has not only instances but also classes.
+Экземпляр GObject создается с помощью функции `g_object_new`.
+GObject имеет не только экземпляры, но и классы.
 
-- A class of GObject is created at the first call of `g_object_new`.
-And there exists only one GObject class.
-- GObject instance is created whenever `g_object_new` is called.
-So, two or more GObject instances can exist.
+- Класс GObject создается при первом вызове `g_object_new`.
+И существует только один класс GObject.
+- Экземпляр GObject создается при каждом вызове `g_object_new`.
+Таким образом, может существовать два или более экземпляров GObject.
 
-In a broad sense, GObject means the object which includes its class and instances.
-In a narrow sense, GObject is a definition of a C structure.
+В широком смысле GObject означает объект, который включает свой класс и экземпляры.
+В узком смысле GObject — это определение структуры C.
 
 ~~~C
 typedef struct _GObject  GObject;
@@ -25,12 +25,12 @@ struct  _GObject
 };
 ~~~
 
-The `g_object_new` function allocates GObject-sized memory, initializes the memory and returns the pointer to the memory.
-The memory is a GObject instance.
+Функция `g_object_new` выделяет память размером с GObject, инициализирует память и возвращает указатель на память.
+Память является экземпляром GObject.
 
-In the same way, the class of GObject is memory allocated by `g_object_new` and its structure is defined with GObjectClass.
-The following is extracted from `gobject.h`.
-But you don't need to know the details of the structure now.
+Точно так же класс GObject — это память, выделенная `g_object_new`, и его структура определена с помощью GObjectClass.
+Следующее извлечено из `gobject.h`.
+Но вам не нужно знать детали структуры сейчас.
 
 ~~~C
 struct  _GObjectClass
@@ -80,11 +80,11 @@ struct  _GObjectClass
 };
 ~~~
 
-The programs for GObject are included in GLib source files.
-You can download the GLib source files from [GNOME download page](https://download.gnome.org/sources/glib/).
+Программы для GObject включены в исходные файлы GLib.
+Вы можете скачать исходные файлы GLib со [страницы загрузки GNOME](https://download.gnome.org/sources/glib/).
 
-There are sample programs in [src/misc](misc) directory in the GObject tutorial repository.
-You can compile them by:
+В каталоге [src/misc](misc) в репозитории руководства по GObject есть примеры программ.
+Вы можете скомпилировать их следующим образом:
 
 ~~~
 $ cd src/misc
@@ -92,33 +92,33 @@ $ meson setup _build
 $ ninja -C _build
 ~~~
 
-One of the programs is `example1.c`.
-Its code is as follows.
+Одна из программ — это `example1.c`.
+Её код выглядит следующим образом.
 
 @@@include
 misc/example1.c
 @@@
 
-- 5-6: `instance1` and `instance2` are pointers that points GObject instances.
-`class1` and `class2` points a class of the instances.
-- 8-11: A function `g_object_new` creates a GObject instance.
-GObject instance is a chunk of memory which has GObject structure (`struct _GObject`).
-The argument `G_TYPE_OBJECT` is the type of GObject.
-This type is different from C language type like `char`  or `int`.
-There is *Type System* which is a base system of GObject system.
-Every data type such as GObject must be registered to the type system.
-The type system has series of functions for the registration.
-If one of the functions is called, then the type system determines `GType` type value for the object and returns it to the caller.
-`GType` is an unsigned long integer on my computer but it depends on the hardware.
-`g_object_new` allocates GObject-sized memory and returns the pointer to the top address of the memory.
-After the creation, this program displays the addresses of instances.
-- 13-16: A macro `G_OBJECT_GET_CLASS` returns the pointer to the class of the argument.
-Therefore, `class1` points the class of `instance1` and `class2` points the class of `instance2` respectively.
-The addresses of the two classes are displayed.
-- 18-19: `g_object_unref` will be explained in the next subsection.
-It destroys the instances and the memory is freed.
+- 5-6: `instance1` и `instance2` — это указатели, которые указывают на экземпляры GObject.
+`class1` и `class2` указывают на класс экземпляров.
+- 8-11: Функция `g_object_new` создает экземпляр GObject.
+Экземпляр GObject — это фрагмент памяти, который имеет структуру GObject (`struct _GObject`).
+Аргумент `G_TYPE_OBJECT` — это тип GObject.
+Этот тип отличается от типа языка C, такого как `char` или `int`.
+Существует *система типов*, которая является базовой системой системы GObject.
+Каждый тип данных, такой как GObject, должен быть зарегистрирован в системе типов.
+Система типов имеет серию функций для регистрации.
+Если одна из функций вызывается, то система типов определяет значение типа `GType` для объекта и возвращает его вызывающей стороне.
+`GType` — это беззнаковое длинное целое число на моем компьютере, но это зависит от аппаратного обеспечения.
+`g_object_new` выделяет память размером с GObject и возвращает указатель на начальный адрес памяти.
+После создания эта программа отображает адреса экземпляров.
+- 13-16: Макрос `G_OBJECT_GET_CLASS` возвращает указатель на класс аргумента.
+Следовательно, `class1` указывает на класс `instance1`, а `class2` указывает на класс `instance2` соответственно.
+Отображаются адреса двух классов.
+- 18-19: `g_object_unref` будет объяснено в следующем подразделе.
+Он уничтожает экземпляры, и память освобождается.
 
-Now, execute it.
+Теперь выполним программу.
 
 ~~~
 $ cd src/misc; _build/example1
@@ -128,49 +128,49 @@ The address of the class of instance1 is 0x55895eaf7880
 The address of the class of instance2 is 0x55895eaf7880
 ~~~
 
-The locations of two instances `instance1` and `instance2` are different.
-Each instance has its own memory.
-The locations of two classes `class1` and `class2` are the same.
-Two GObject instances share the same class.
+Расположения двух экземпляров `instance1` и `instance2` различны.
+Каждый экземпляр имеет свою собственную память.
+Расположения двух классов `class1` и `class2` одинаковы.
+Два экземпляра GObject используют один и тот же класс.
 
 ![Class and Instance](../image/class_instance.png){width=10cm height=7.5cm}
 
-## Reference count
+## Счётчик ссылок
 
-GObject instance has its own memory.
-They are allocated by the system when it is created.
-If it becomes useless, the memory must be freed.
-However, how can we determine whether it is useless?
-GObject system provides reference count to solve the problem.
+Экземпляр GObject имеет свою собственную память.
+Они выделяются системой при создании.
+Если он становится бесполезным, память должна быть освобождена.
+Однако как мы можем определить, что он бесполезен?
+Система GObject предоставляет счётчик ссылок для решения этой проблемы.
 
-An instance is created and used by other instance or the main program.
-That is to say, the instance is referred.
-If the instance is referred by A and B, then the number of the reference is two.
-This number is called *reference count*.
-Let's think about a scenario like this: 
+Экземпляр создается и используется другим экземпляром или основной программой.
+То есть на экземпляр ссылаются.
+Если на экземпляр ссылаются A и B, то количество ссылок равно двум.
+Это число называется *счётчиком ссылок*.
+Давайте рассмотрим такой сценарий: 
 
-- A calls `g_object_new` and owns an instance G.
-A refers G, so the reference count of G is 1.
-- B wants to use G too.
-B calls `g_object_ref` and increases the reference count by 1.
-Now the reference count is 2.
-- A no longer uses G.
-A calls `g_object_unref` and decreases the reference count by 1.
-Now the reference count is 1.
-- B no longer uses G.
-B calls `g_object_unref` and decreases the reference count by 1.
-Now the reference count is 0.
-- Because the reference count is zero, G knows that no one refers to it.
-G begins finalizing process by itself.
-G disappears and the memory is freed.
+- A вызывает `g_object_new` и владеет экземпляром G.
+A ссылается на G, поэтому счётчик ссылок G равен 1.
+- B также хочет использовать G.
+B вызывает `g_object_ref` и увеличивает счётчик ссылок на 1.
+Теперь счётчик ссылок равен 2.
+- A больше не использует G.
+A вызывает `g_object_unref` и уменьшает счётчик ссылок на 1.
+Теперь счётчик ссылок равен 1.
+- B больше не использует G.
+B вызывает `g_object_unref` и уменьшает счётчик ссылок на 1.
+Теперь счётчик ссылок равен 0.
+- Поскольку счётчик ссылок равен нулю, G знает, что никто на него не ссылается.
+G начинает процесс завершения самостоятельно.
+G исчезает, и память освобождается.
 
-A program `example2.c` is based on the scenario above.
+Программа `example2.c` основана на приведенном выше сценарии.
 
 @@@include
 misc/example2.c
 @@@
 
-Now execute it.
+Теперь выполним программу.
 
 ~~~
 $ cd src/misc; _build/example2
@@ -187,41 +187,41 @@ The instance memories are possibly returned to the system.
 Therefore, the access to the same address may cause a segmentation error.
 ~~~
 
-`example2` shows:
+`example2` показывает:
 
-- `g_object_new` creates a new GObject instance and sets its reference count to 1.
-- `g_object_ref` increases the reference count by 1.
-- `g_object_unref` decreases the reference count by 1.
-If the reference count drops to zero, the instance destroys itself.
+- `g_object_new` создает новый экземпляр GObject и устанавливает его счётчик ссылок на 1.
+- `g_object_ref` увеличивает счётчик ссылок на 1.
+- `g_object_unref` уменьшает счётчик ссылок на 1.
+Если счётчик ссылок падает до нуля, экземпляр уничтожает себя.
 
-## Initialization and destruction process
+## Процесс инициализации и уничтожения
 
-The actual process of GObject initialization and destruction is very complex.
-The following is simplified description without details.
+Фактический процесс инициализации и уничтожения GObject очень сложен.
+Следующее является упрощенным описанием без подробностей.
 
-Initialization
+Инициализация
 
-1. Registers GObject type with the type system.
-This is done in the GLib initialization process before the function `main` is called.
-(If the compiler is gcc, then `__attribute__ ((constructor))` is used to qualify the initialization function.
-Refer to [GCC manual](https://gcc.gnu.org/onlinedocs/gcc-10.2.0/gcc/Common-Function-Attributes.html#Common-Function-Attributes).)
-2. Allocates memory for GObjectClass and GObject structure.
-3. Initializes the GObjectClass structure memory.
-This memory will be the class of GObject.
-4. Initializes the GObject structure memory.
-This memory will be the instance of GObject.
+1. Регистрирует тип GObject в системе типов.
+Это делается в процессе инициализации GLib до вызова функции `main`.
+(Если компилятор — gcc, то `__attribute__ ((constructor))` используется для квалификации функции инициализации.
+Смотрите [руководство GCC](https://gcc.gnu.org/onlinedocs/gcc-10.2.0/gcc/Common-Function-Attributes.html#Common-Function-Attributes).)
+2. Выделяет память для структур GObjectClass и GObject.
+3. Инициализирует память структуры GObjectClass.
+Эта память будет классом GObject.
+4. Инициализирует память структуры GObject.
+Эта память будет экземпляром GObject.
 
-This initialization process is carried out when `g_object_new` function is called for the first time.
-At the second and subsequent call for `g_object_new`, it performs only two processes: (1) memory allocation for GObject structure (2) initialization for the memory.
-`g_object_new` returns the pointer that points the instance (the memory allocated for the GObject structure).
+Этот процесс инициализации выполняется при первом вызове функции `g_object_new`.
+При втором и последующих вызовах `g_object_new` она выполняет только два процесса: (1) выделение памяти для структуры GObject (2) инициализация памяти.
+`g_object_new` возвращает указатель, который указывает на экземпляр (память, выделенную для структуры GObject).
 
-Destruction
+Уничтожение
 
-1. Destroys GObject instance. The memory for the instance is freed.
+1. Уничтожает экземпляр GObject. Память для экземпляра освобождается.
 
-GObject type is a static type.
-Static type never destroys its class.
-So, even if the destroyed instance is the last instance, the class still remains.
+Тип GObject является статическим типом.
+Статический тип никогда не уничтожает свой класс.
+Поэтому, даже если уничтоженный экземпляр является последним экземпляром, класс остается.
 
-When you write code to define a child object of GObject, It is important to understand the process above.
-The detailed process will be explained in the later sections.
+Когда вы пишете код для определения дочернего объекта GObject, важно понимать процесс выше.
+Подробный процесс будет объяснен в последующих разделах.

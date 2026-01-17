@@ -1,37 +1,37 @@
-# Derivable and non-abstract type
+# Производный и не абстрактный тип
 
-It is more common to make a non-abstract derivable type than abstract type.
-This section covers how to make non-abstract derivable type objects.
-A derivable type example is an object for string.
-It is TStr.
-And its child is an object for numeric string.
-A numeric string is a string that expresses a number.
-For example, "0", "-100" and "123.45".
-The child object (numeric string) will be explained in the next section.
+Гораздо чаще создают не абстрактный производный тип, чем абстрактный тип.
+Этот раздел описывает, как создавать объекты не абстрактного производного типа.
+Примером производного типа является объект для строки.
+Это TStr.
+А его потомок — это объект для числовой строки.
+Числовая строка — это строка, которая выражает число.
+Например, "0", "-100" и "123.45".
+Дочерний объект (числовая строка) будет объяснен в следующем разделе.
 
-This section describes memory management for strings before derivable objects.
+Этот раздел описывает управление памятью для строк перед производными объектами.
 
-## String and memory management
+## Строка и управление памятью
 
-TStr has a string type value.
-It is similar to TInt or TDouble but string is more complex than int and double.
-When you make TStr program, you need to be careful about memory management, which is not necessary to TInt and TDouble.
+TStr имеет значение строкового типа.
+Это похоже на TInt или TDouble, но строка более сложна, чем int и double.
+При создании программы TStr нужно быть внимательным к управлению памятью, что не требуется для TInt и TDouble.
 
-### String and memory
+### Строка и память
 
-String is an array of characters that is terminated with '\0'.
-String is not a C type such as char, int, float or double.
-But the pointer to a character array behaves like a string type of other languages.
-So, we often call the pointer string.
+Строка — это массив символов, который завершается '\0'.
+Строка не является типом C, таким как char, int, float или double.
+Но указатель на массив символов ведет себя как строковый тип других языков.
+Поэтому мы часто называем указатель строкой.
 
-If the pointer is NULL, it points nothing.
-So, the pointer is not a string.
-Programs with string will include bugs if you aren't careful about NULL pointer.
+Если указатель равен NULL, он ни на что не указывает.
+Таким образом, указатель не является строкой.
+Программы со строками будут содержать ошибки, если вы не будете осторожны с NULL-указателем.
 
-Another annoying problem is memory allocation.
-Because string is an array of characters, memory allocation is necessary to create a new string.
-We don't forget to allocate memory, but often forget to free the memory.
-It causes memory leak.
+Другая раздражающая проблема — это выделение памяти.
+Поскольку строка — это массив символов, выделение памяти необходимо для создания новой строки.
+Мы не забываем выделять память, но часто забываем освобождать память.
+Это вызывает утечку памяти.
 
 ~~~C
 char *s;
@@ -40,28 +40,28 @@ s = g_strdup ("Hello.");
 g_free (s);
 ~~~
 
-`g_strdup` duplicates a string.
-It does:
+`g_strdup` дублирует строку.
+Она выполняет:
 
-- Calculates the size of the string.
-The size of "Hello." is 7 because strings are zero-terminated.
-The string is an array 'H', 'e', 'l', 'l', 'o', '.' and zero ('\0').
-- Requests the system to allocate 7 bytes memories.
-- Copies the string to the memory.
-- Returns the pointer to the newly-allocated memory.
-- If the argument is NULL, then no memory is allocated and it returns NULL.
+- Вычисляет размер строки.
+Размер "Hello." равен 7, потому что строки завершаются нулем.
+Строка — это массив 'H', 'e', 'l', 'l', 'o', '.' и ноль ('\0').
+- Запрашивает у системы выделение 7 байт памяти.
+- Копирует строку в память.
+- Возвращает указатель на вновь выделенную память.
+- Если аргумент равен NULL, то память не выделяется, и она возвращает NULL.
 
-If the string `s` is no longer in use, `s` must be freed, which means the allocated 7 bytes must be returned to the system.
-`g_free` frees the memory.
+Если строка `s` больше не используется, `s` должна быть освобождена, что означает, что выделенные 7 байт должны быть возвращены системе.
+`g_free` освобождает память.
 
-Strings bounded by double quotes like "Hello." are string literals.
-They are an array of characters, but the contents of the array are not allowed to change.
-And they mustn't be freed.
-If you write a character in a string literal or free a string literal, the result is undefined.
-Maybe bad things will happen, for example, a segmentation fault error.
+Строки, ограниченные двойными кавычками, как "Hello.", являются строковыми литералами.
+Они являются массивом символов, но содержимое массива не может быть изменено.
+И они не должны быть освобождены.
+Если вы записываете символ в строковый литерал или освобождаете строковый литерал, результат не определен.
+Возможно, произойдут плохие вещи, например, ошибка сегментации.
 
-There's a difference between arrays and pointers when you initialize them with a string literal.
-If an array is initialized with a string literal, the array can be changed.
+Существует разница между массивами и указателями, когда вы инициализируете их строковым литералом.
+Если массив инициализируется строковым литералом, массив может быть изменен.
 
 ~~~C
 char a[]="Hello!";
@@ -69,23 +69,23 @@ a[1]='a';
 g_print ("%s\n", a); /* Hallo will appear on your display. */
 ~~~
 
-The first line initializes an array `a`.
-The initialization is not simple.
-First, the compiler calculates the length of "Hello!".
-It is seven because the string literal has '\0' at the end of it.
-Then seven bytes memory is allocated in static memory or stack memory.
-It depends on the class of the array, whether `static` or `auto`.
-The memory is initialized with "Hello!".
-So, the string in the array can be changed.
-This program successfully displays `Hallo!.
+Первая строка инициализирует массив `a`.
+Инициализация не простая.
+Сначала компилятор вычисляет длину "Hello!".
+Она равна семи, потому что строковый литерал имеет '\0' в конце.
+Затем семь байт памяти выделяется в статической памяти или памяти стека.
+Это зависит от класса массива, будь то `static` или `auto`.
+Память инициализируется "Hello!".
+Таким образом, строка в массиве может быть изменена.
+Эта программа успешно отображает `Hallo!.
 
-The first line of the program above is the same as follows.
+Первая строка программы выше эквивалентна следующей.
 
 ~~~C
 char a[] = {'H', 'e', 'l', 'l', 'o', '!', '\0'};
 ~~~
 
-If you define a pointer with string literal, you can't change the string pointed by the pointer.
+Если вы определяете указатель со строковым литералом, вы не можете изменить строку, на которую указывает указатель.
 
 ~~~C
 char *a = "Hello";
@@ -93,53 +93,53 @@ char *a = "Hello";
 g_print ("%s\n", a);
 ~~~
 
-The first line just assigns the address of the string literal to the variable `a`.
-String literal is an array of characters but it's read-only.
-It might be in the program code area or some other non-writable area.
-It depends on the implementation of your compiler.
-Therefore, the second line tries to write a char 'a' to the read-only memory and the result is undefined, for example, a segmentation error happens.
-Anyway, don't write a program like this.
+Первая строка просто присваивает адрес строкового литерала переменной `a`.
+Строковый литерал — это массив символов, но он доступен только для чтения.
+Он может находиться в области кода программы или в какой-либо другой области, недоступной для записи.
+Это зависит от реализации вашего компилятора.
+Поэтому вторая строка пытается записать символ 'a' в память, доступную только для чтения, и результат не определен, например, происходит ошибка сегментации.
+В любом случае, не пишите такую программу.
 
-In conclusion, a string is an array of characters and it is placed in one of the following.
+В заключение, строка — это массив символов, и она размещается в одном из следующих мест.
 
-- Read-only memory.
-A string literal is read-only.
-- Stack.
-If the class of an array is `auto`, then the array is placed in the stack.
-stack is writable.
-If the array is defined in a function, its default class is `auto`.
-The stack area will disappear when the function returns to the caller.
-- Static area.
-If the class of an array is `static`, then the array is placed in the static area.
-It keeps its value and remains for the life of the program.
-This area is writable.
-- Heap.
-You can allocate and free memory for a string.
-For allocation, `g_new` or `g_new0` is used.
-For freeing, `g_free` is used.
+- Память только для чтения.
+Строковый литерал доступен только для чтения.
+- Стек.
+Если класс массива `auto`, то массив размещается в стеке.
+Стек доступен для записи.
+Если массив определен в функции, его класс по умолчанию — `auto`.
+Область стека исчезнет, когда функция вернется вызывающей стороне.
+- Статическая область.
+Если класс массива `static`, то массив размещается в статической области.
+Он сохраняет свое значение и остается на протяжении всей жизни программы.
+Эта область доступна для записи.
+- Куча.
+Вы можете выделять и освобождать память для строки.
+Для выделения используется `g_new` или `g_new0`.
+Для освобождения используется `g_free`.
 
-### Copying string
+### Копирование строки
 
-There are two ways to copy a string.
-First way is just copying the pointer.
+Существует два способа копирования строки.
+Первый способ — это просто копирование указателя.
 
 ~~~C
 char *s = "Hello";
 char *t = s;
 ~~~
 
-Two pointers `s` and `t` points the same address.
-Therefore, you can't modify `t` because `t` points a string literal, which is read-only.
+Два указателя `s` и `t` указывают на один и тот же адрес.
+Следовательно, вы не можете изменить `t`, потому что `t` указывает на строковый литерал, который доступен только для чтения.
 
-Second way is creating memory and copying the string to the memory.
+Второй способ — это создание памяти и копирование строки в память.
 
 ~~~C
 char *s = "Hello";
 char *t = g_strdup (s);
 ~~~
 
-The function `g_strdup` allocates memory and initializes it with "Hello", then returns the pointer to the memory.
-The function `g_strdup` is almost same as the function `string_dup` below.
+Функция `g_strdup` выделяет память и инициализирует её "Hello", затем возвращает указатель на память.
+Функция `g_strdup` почти идентична функции `string_dup` ниже.
 
 ~~~C
 #include <glib-object.h>
@@ -159,25 +159,25 @@ string_dup (char *s) {
 }
 ~~~
 
-If `g_strdup` is used, the two pointers `s` and `t` point different memories.
-You can modify `t` because it is placed in the memory allocated from the heap area.
+Если используется `g_strdup`, два указателя `s` и `t` указывают на разные области памяти.
+Вы можете изменить `t`, потому что он размещен в памяти, выделенной из области кучи.
 
-It is important to know the difference between assigning pointers and duplicating strings.
+Важно знать разницу между присваиванием указателей и дублированием строк.
 
-### const qualifier
+### Квалификатор const
 
-The qualifier `const` makes a variable won't change its value.
-It can also be applied to an array.
-Then, the elements of the array won't be changed.
+Квалификатор `const` делает так, что переменная не изменит свое значение.
+Он также может быть применен к массиву.
+Тогда элементы массива не будут изменены.
 
 ~~~C
 const double pi = 3.1415926536;
 const char a[] = "read only string";
 ~~~
 
-An array parameter in a function can be qualified with `const` to indicate that the function does not change the array.
-In the same way, the return value (a pointer to an array or string) of a function can be qualified with `const`.
-The caller mustn't modify or free the returned array or string.
+Параметр массива в функции может быть квалифицирован с помощью `const`, чтобы указать, что функция не изменяет массив.
+Точно так же возвращаемое значение (указатель на массив или строку) функции может быть квалифицировано с помощью `const`.
+Вызывающая сторона не должна изменять или освобождать возвращенный массив или строку.
 
 ~~~C
 char *
@@ -189,141 +189,141 @@ const char *
 g_value_get_string (const GValue *value);
 ~~~
 
-The qualifier `const` indicates who is the owner of the string when it is used in the function of objects.
-"Owner" is an object or a caller of the function that has the right to modify or free the string.
+Квалификатор `const` указывает, кто является владельцем строки, когда он используется в функции объектов.
+"Владелец" — это объект или вызывающая сторона функции, которая имеет право изменять или освобождать строку.
 
-For example, `g_value_get_string` is given `const GValue *value` as an argument.
-The GValue pointed by `value` is owned by the caller and the function doesn't change or free it.
-The function returns a string qualified with `const`.
-The returned string is owned by the object and the caller mustn't change or free the string.
-It is possible that the string will be changed or freed by the object later.
+Например, `g_value_get_string` получает `const GValue *value` в качестве аргумента.
+GValue, на которое указывает `value`, принадлежит вызывающей стороне, и функция не изменяет и не освобождает его.
+Функция возвращает строку, квалифицированную с помощью `const`.
+Возвращенная строка принадлежит объекту, и вызывающая сторона не должна изменять или освобождать строку.
+Возможно, что строка будет изменена или освобождена объектом позже.
 
-## Header file
+## Заголовочный файл
 
-The rest of this section is about TStr.
-TStr is a child of GObject and it holds a string.
-The string is a pointer and an array of characters.
-The pointer points the array.
-The pointer can be NULL.
-If it is NULL, TStr has no array.
-The memory of the array comes from the heap area.
-TStr owns the memory and is responsible to free it when it becomes useless.
-TStr has a string type property.
+Остальная часть этого раздела посвящена TStr.
+TStr является потомком GObject и содержит строку.
+Строка — это указатель и массив символов.
+Указатель указывает на массив.
+Указатель может быть NULL.
+Если он NULL, TStr не имеет массива.
+Память массива берется из области кучи.
+TStr владеет памятью и отвечает за её освобождение, когда она становится бесполезной.
+TStr имеет свойство строкового типа.
 
-The header file `tstr.h` is as follows.
+Заголовочный файл `tstr.h` выглядит следующим образом.
 
 @@@include
 tstr/tstr.h
 @@@
 
-- 6: Uses `G_DECLARE_DERIVABLE_TYPE`.
-The TStr class is derivable and its child class will be defined later.
-- 8-12: TStrClass has one class method.
-It is `set_string` member of the TStrClass structure.
-This will be overridden by the child class `TNumStr`.
-Therefore, Both TStr and TNumStr has `set_string` member in their classes but they point different functions.
-- 14-15: The public function `t_str_concat` connects two strings of TStr instances and returns a new TStr instance.
-- 18-22: Setter and getter.
-- 25-29: Functions to create a TStr object.
+- 6: Использует `G_DECLARE_DERIVABLE_TYPE`.
+Класс TStr является производным, и его дочерний класс будет определен позже.
+- 8-12: TStrClass имеет один метод класса.
+Это член `set_string` структуры TStrClass.
+Он будет переопределен дочерним классом `TNumStr`.
+Следовательно, и TStr, и TNumStr имеют член `set_string` в своих классах, но они указывают на разные функции.
+- 14-15: Публичная функция `t_str_concat` соединяет две строки экземпляров TStr и возвращает новый экземпляр TStr.
+- 18-22: Сеттер и геттер.
+- 25-29: Функции для создания объекта TStr.
 
-## C file
+## C файл
 
-The C file `tstr.c` for TStr is as follows.
+C файл `tstr.c` для TStr выглядит следующим образом.
 
 @@@include
 tstr/tstr.c
 @@@
 
-- 3-9: `enum` defines a property id.
-The member `PROP_STRING` is the id of the "string" property.
-Only one property is defined here, so it is possible to define it without `enum`.
-However, `enum` can be applied to define two or more properties and it is more common.
-The last member `N_PROPERTIES` is two because `enum` is zero-based.
-An array `str_properties` has two elements since `N_PROPERTIES` is two.
-The first element isn't used and it is assigned with NULL.
-The second element will be assigned a pointer to a GParamSpec instance in the class initialization function.
-- 11-13: TStrPrivate is a C structure.
-It is a private data area for TStr.
-If TStr were a final type, then no descendant would exist and TStr instance could be a private data area.
-But TStr is derivable so you can't store such private data in TStr instance that is open to the descendants.
-The name of this structure is "<object name\>Private" like `TStrPrivate`.
-The structure must be defined before `G_DEFINE_TYPE_WITH_PRIVATE`.
-- 15: `G_DEFINE_TYPE_WITH_PRIVATE` macro.
-It is similar to `G_DEFINE_TYPE` macro but it adds the private data area for the derivable instance.
-This macro expands to:
-  - Declaration of `t_str_class_init` which is a class initialization function.
-  - Declaration of `t_str_init` which is an instance initialization function.
-  - Definition of `t_str_parent_class` static variable.
-It points to the parent class of TStr.
-  - The function call that adds private instance data to the type.
-It is a C structure and its name is `TStrPrivate`.
-  - Definition of `t_str_get_type ()` function.
-This function registers the type in its first call.
-  - Definition of the private instance getter `t_str_get_instance_private ()`.
-- 17-28: The function `t_str_set_property` sets the "string" property and it is used by `g_object_set` family functions.
-It uses `t_str_set_string` function to set the private data with the copy of the string from the GValue.
-It is important because `t_str_set_string` calls the class method `set_string`, which will be overridden by the child class.
-Therefore, the behavior of `t_str_set_property` function is different between TStr and TNumStr, which is a child of TStr.
-The function `g_value_get_string` returns the pointer to the string that GValue owns.
-So you need to duplicate the string and it is done in the function `t_str_set_string`.
-- 30-40: The function `t_str_get_property` gets the "string" property and it is used by `g_object_get` family functions.
-It just gives `priv->string` to the function `g_value_set_string`.
-The variable `priv` points the private data area.
-The second argument `priv->string` is owned by the TStr instance and the function `g_value_set_string` duplicates it to store in the GValue structure.
-- 44-51 The function `t_str_real_set_string` is the body of the class method and pointed by `set_string` member in the class.
-First, it gets the pointer to the private area with `t_str_get_instance_private` function.
-If the instance holds a string, free it before setting it to a new string.
-It copies the given string and assigns it to `priv->string`.
-The duplication is important.
-Thanks to that, the address of the string is hidden from the out of the instance.
-- 53-61: The finalize function `t_str_finalize` is called when TStr instance is destroyed.
-The destruction process has two phases, "dispose" and "finalize".
-In the disposal phase, the instance releases instances.
-In the finalization phase, the instance does the rest of all the finalization like freeing memories.
-This function frees the string `priv->string` if necessary.
-After that, it calls the parent's finalize method.
-This is called "chain up to its parent" and it will be explained later in this section.
-- 63-68: The instance initialization function `t_str_init` assigns NULL to `priv->string`.
-- 70-81: The class initialization function `t_str_class_init` overrides `finalize`, `set_property` and `get_property` members.
-It creates the GParamSpec instance with `g_param_spec_string` and installs the property with `g_object_class_install_properties`.
-It assigns `t_str_real_set_string` to the member `set_string`.
-It is a class method and is expected to be replaced in the child class.
-- 84-101: Setter and getter.
-The setter method `t_str_set_string` just calls the class method.
-So, it is expected to be replaced in the child class.
-It is used by property set function `t_str_set_property`.
-So the behavior of property setting will change in the child class.
-The getter method `t_str_get_string` just duplicates the string `priv->string` and return the copy.
-- 103-126: The public function `t_str_concat` concatenates the string of `self` and `other`, and creates a new TStr.
-- 129-137: Two functions `t_str_new_with_string` and `t_str_new` create a new TStr instances.
+- 3-9: `enum` определяет идентификатор свойства.
+Член `PROP_STRING` является идентификатором свойства "string".
+Здесь определено только одно свойство, поэтому можно определить его без `enum`.
+Однако `enum` может быть применен для определения двух или более свойств, и это более распространено.
+Последний член `N_PROPERTIES` равен двум, потому что `enum` начинается с нуля.
+Массив `str_properties` имеет два элемента, так как `N_PROPERTIES` равно двум.
+Первый элемент не используется и ему присваивается NULL.
+Второму элементу будет присвоен указатель на экземпляр GParamSpec в функции инициализации класса.
+- 11-13: TStrPrivate — это структура C.
+Это область частных данных для TStr.
+Если бы TStr был финальным типом, то потомков бы не существовало, и экземпляр TStr мог бы быть областью частных данных.
+Но TStr является производным, поэтому вы не можете хранить такие частные данные в экземпляре TStr, который открыт для потомков.
+Имя этой структуры — "<имя объекта\>Private", например `TStrPrivate`.
+Структура должна быть определена до `G_DEFINE_TYPE_WITH_PRIVATE`.
+- 15: Макрос `G_DEFINE_TYPE_WITH_PRIVATE`.
+Он похож на макрос `G_DEFINE_TYPE`, но добавляет область частных данных для производного экземпляра.
+Этот макрос раскрывается в:
+  - Объявление `t_str_class_init`, которая является функцией инициализации класса.
+  - Объявление `t_str_init`, которая является функцией инициализации экземпляра.
+  - Определение статической переменной `t_str_parent_class`.
+Она указывает на родительский класс TStr.
+  - Вызов функции, которая добавляет частные данные экземпляра к типу.
+Это структура C, и её имя — `TStrPrivate`.
+  - Определение функции `t_str_get_type ()`.
+Эта функция регистрирует тип при первом вызове.
+  - Определение геттера частного экземпляра `t_str_get_instance_private ()`.
+- 17-28: Функция `t_str_set_property` устанавливает свойство "string", и она используется семейством функций `g_object_set`.
+Она использует функцию `t_str_set_string` для установки частных данных с копией строки из GValue.
+Это важно, потому что `t_str_set_string` вызывает метод класса `set_string`, который будет переопределен дочерним классом.
+Следовательно, поведение функции `t_str_set_property` различается между TStr и TNumStr, который является потомком TStr.
+Функция `g_value_get_string` возвращает указатель на строку, которой владеет GValue.
+Поэтому вам нужно дублировать строку, и это делается в функции `t_str_set_string`.
+- 30-40: Функция `t_str_get_property` получает свойство "string", и она используется семейством функций `g_object_get`.
+Она просто передает `priv->string` функции `g_value_set_string`.
+Переменная `priv` указывает на область частных данных.
+Второй аргумент `priv->string` принадлежит экземпляру TStr, и функция `g_value_set_string` дублирует его для хранения в структуре GValue.
+- 44-51: Функция `t_str_real_set_string` является телом метода класса и на неё указывает член `set_string` в классе.
+Сначала она получает указатель на частную область с помощью функции `t_str_get_instance_private`.
+Если экземпляр содержит строку, освободите её перед установкой новой строки.
+Она копирует данную строку и присваивает её `priv->string`.
+Дублирование важно.
+Благодаря этому адрес строки скрыт от внешней части экземпляра.
+- 53-61: Функция финализации `t_str_finalize` вызывается, когда экземпляр TStr уничтожается.
+Процесс уничтожения имеет две фазы: "dispose" и "finalize".
+На фазе освобождения экземпляр освобождает экземпляры.
+На фазе финализации экземпляр выполняет остальную часть финализации, например, освобождение памяти.
+Эта функция освобождает строку `priv->string`, если необходимо.
+После этого она вызывает метод финализации родителя.
+Это называется "цепочка до родителя", и это будет объяснено позже в этом разделе.
+- 63-68: Функция инициализации экземпляра `t_str_init` присваивает NULL `priv->string`.
+- 70-81: Функция инициализации класса `t_str_class_init` переопределяет члены `finalize`, `set_property` и `get_property`.
+Она создает экземпляр GParamSpec с помощью `g_param_spec_string` и устанавливает свойство с помощью `g_object_class_install_properties`.
+Она присваивает `t_str_real_set_string` члену `set_string`.
+Это метод класса, и ожидается, что он будет заменен в дочернем классе.
+- 84-101: Сеттер и геттер.
+Метод сеттера `t_str_set_string` просто вызывает метод класса.
+Таким образом, ожидается, что он будет заменен в дочернем классе.
+Он используется функцией установки свойства `t_str_set_property`.
+Следовательно, поведение установки свойства изменится в дочернем классе.
+Метод геттера `t_str_get_string` просто дублирует строку `priv->string` и возвращает копию.
+- 103-126: Публичная функция `t_str_concat` объединяет строку `self` и `other` и создает новый TStr.
+- 129-137: Две функции `t_str_new_with_string` и `t_str_new` создают новые экземпляры TStr.
 
-## Chaining up to its parent
+## Цепочка до родителя
 
-The "chain up to its parent" process is illustrated with the diagram below.
+Процесс "цепочки до родителя" проиллюстрирован на диаграмме ниже.
 
-![Chaining up process in GObject and TStr](../image/chainup.png){width=10.5cm height=9cm}
+![Процесс цепочки в GObject и TStr](../image/chainup.png){width=10.5cm height=9cm}
 
-There are two classes, GObjectClass and TStrClass.
-Each class has their finalize methods (functions) pointed by the pointers in the class structures.
-The finalize method of TStrClass finalizes its own part of the TStr instance.
-At the end of the function, it calls its parent's finalize method.
-It is the finalize method of GObjectClass.
-It calls its own finalize function and finalizes the GObject private data.
+Есть два класса: GObjectClass и TStrClass.
+Каждый класс имеет свои методы финализации (функции), на которые указывают указатели в структурах классов.
+Метод финализации TStrClass финализирует свою собственную часть экземпляра TStr.
+В конце функции он вызывает метод финализации родителя.
+Это метод финализации GObjectClass.
+Он вызывает свою собственную функцию финализации и финализирует частные данные GObject.
 
-If the GObjectClass has two or more descendant classes, the number of the finalize functions may be the same as the number of the descendants.
-And they are connected by "chain up to its parent" way.  
+Если GObjectClass имеет два или более дочерних классов, количество функций финализации может быть таким же, как количество потомков.
+И они соединены способом "цепочка до родителя".
 
-![Chaining up process](../image/chainup3.png){width=12cm height=9cm}
+![Процесс цепочки](../image/chainup3.png){width=12cm height=9cm}
 
-## How to write a derivable type
+## Как написать производный тип
 
-- Use `G_DECLARE_DERIVABLE_TYPE` macro in the header file.
-You need to write a macro like `#define T_TYPE_STR (t_str_get_type ())` before `G_DECLARE_DERIVABLE_TYPE`.
-- Declare your class structure in the header file.
-The contents of the class are open to the descendants.
-Most of the members are class methods.
-- Use `G_DEFINE_TYPE_WITH_PRIVATE` in the C file.
-You need to define the private area before `G_DEFINE_TYPE_WITH_PRIVATE`.
-It is a C structure and the name is "<object name\>Private" like "TStrPrivate".
-- Define class and instance initialization functions.
+- Используйте макрос `G_DECLARE_DERIVABLE_TYPE` в заголовочном файле.
+Вам нужно написать макрос вроде `#define T_TYPE_STR (t_str_get_type ())` перед `G_DECLARE_DERIVABLE_TYPE`.
+- Объявите структуру вашего класса в заголовочном файле.
+Содержимое класса открыто для потомков.
+Большинство членов являются методами класса.
+- Используйте `G_DEFINE_TYPE_WITH_PRIVATE` в C файле.
+Вам нужно определить частную область перед `G_DEFINE_TYPE_WITH_PRIVATE`.
+Это структура C, и имя — "<имя объекта\>Private", например "TStrPrivate".
+- Определите функции инициализации класса и экземпляра.
 

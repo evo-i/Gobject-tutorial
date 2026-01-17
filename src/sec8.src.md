@@ -1,90 +1,90 @@
-# Child class extends parent's function
+# Дочерний класс расширяет функцию родителя
 
-The example in this section is TNumStr object.
-TNumStr is a child of TStr object.
-TNumStr holds a string and the string type, which is one of `t_int`, `t_double` or `t_none`.
+Примером в этом разделе является объект TNumStr.
+TNumStr является дочерним объектом TStr.
+TNumStr содержит строку и тип строки, который может быть `t_int`, `t_double` или `t_none`.
 
-- t\_int: the string expresses an integer
-- t\_double: the string expresses a double (floating point)
-- t\_none: the string doesn't express the two numbers above.
+- t\_int: строка выражает целое число
+- t\_double: строка выражает число с плавающей точкой (double)
+- t\_none: строка не выражает ни одно из двух чисел выше.
 
-A t\_int or t\_double type string is called a numeric string.
-It is not a common terminology and it is used only in this tutorial.
-In short, a numeric string is a string that expresses a number.
-For example, "0", "-100" and "123.456" are numeric strings.
-They are strings and express numbers.
+Строка типа t\_int или t\_double называется числовой строкой.
+Это не общепринятая терминология, она используется только в этом учебнике.
+Короче говоря, числовая строка - это строка, которая выражает число.
+Например, "0", "-100" и "123.456" являются числовыми строками.
+Это строки, которые выражают числа.
 
-- "0" is a string.
-It is a character array and its elements are '0' and '\0'.
-It expresses 0, which is an integer zero.
-- "-100" is a string that consists of '-', '1', '0', '0' and '\0'.
-It expresses an integer -100.
-- "123.456" consists of '1', '2', '3', '.', '4', '5', '6' and '\0'.
-It expresses a real number (double type) 123.456.
+- "0" является строкой.
+Это массив символов, элементы которого '0' и '\0'.
+Она выражает 0, что является целым нулем.
+- "-100" является строкой, состоящей из '-', '1', '0', '0' и '\0'.
+Она выражает целое число -100.
+- "123.456" состоит из '1', '2', '3', '.', '4', '5', '6' и '\0'.
+Она выражает вещественное число (тип double) 123.456.
 
-A numeric string is such a specific string.
+Числовая строка - это именно такая специфическая строка.
 
-## Verification of a numeric string
+## Проверка числовой строки
 
-Before defining TNumStr, we need a way to verify a numeric string.
+Перед определением TNumStr нам нужен способ проверки числовой строки.
 
-Numeric string includes:
+Числовая строка включает:
 
-- Integer.
-For example, "0", "100", "-10" and "+20".
-- Double.
-For example, "0.1", "-10.3", "+3.14", ".05" "1." and "0.0".
+- Целое число.
+Например, "0", "100", "-10" и "+20".
+- Число с плавающей точкой.
+Например, "0.1", "-10.3", "+3.14", ".05" "1." и "0.0".
 
-We need to be careful that "0" and "0.0" are different.
-Because their type are different.
-The type of "0" is integer and the type of "0.0" is double.
-In the same way, "1" is an integer and "1." is a double.
+Нужно быть осторожным, что "0" и "0.0" различны.
+Потому что их типы различны.
+Тип "0" - целое число, а тип "0.0" - double.
+Точно так же "1" - это целое число, а "1." - это double.
 
-".5" and "0.5" are the same.
-Both are double and their values are 0.5.
+".5" и "0.5" - одно и то же.
+Оба являются double, и их значения равны 0.5.
 
-Verification of a numeric string is a kind of lexical analysis.
-A state diagram and state matrix is often used for lexical analysis.
+Проверка числовой строки является своего рода лексическим анализом.
+Для лексического анализа часто используется диаграмма состояний и матрица состояний.
 
-A numeric string is a sequence of characters that satisfies:
+Числовая строка - это последовательность символов, которая удовлетворяет следующим условиям:
 
-1. '+' or '-' can be the first character. It can be left out.
-2. followed by a sequence of digits.
-3. followed by a period.
-4. followed by a sequence of digits.
+1. '+' или '-' может быть первым символом. Он может быть опущен.
+2. за ним следует последовательность цифр.
+3. за ней следует точка.
+4. за ней следует последовательность цифр.
 
-The second part can be left out.
-For example, ".56" or "-.56" are correct.
+Вторая часть может быть опущена.
+Например, ".56" или "-.56" являются корректными.
 
-The third and fourth parts can be left out.
-For example, "12" or "-23" are correct.
+Третья и четвертая части могут быть опущены.
+Например, "12" или "-23" являются корректными.
 
-The fourth part can be left out.
-For example, "100." is correct.
+Четвертая часть может быть опущена.
+Например, "100." является корректной.
 
-There are six states.
+Существует шесть состояний.
 
-- 0 is the start point.
-- 1 is the state after '+' or '-'.
-- 2 is at the middle of the first sequence of digits (integer part).
-- 3 is the state after the decimal point.
-- 4 is the end of the string and the string is int.
-- 5 is the end of the string and the string is double.
-- 6 is error. The string doesn't express a number.
+- 0 - начальная точка.
+- 1 - состояние после '+' или '-'.
+- 2 - в середине первой последовательности цифр (целая часть).
+- 3 - состояние после десятичной точки.
+- 4 - конец строки, и строка является int.
+- 5 - конец строки, и строка является double.
+- 6 - ошибка. Строка не выражает число.
 
-The input characters are:
+Входные символы:
 
-- 0: '+' or '-'
-- 1: digit ('0' - '9')
-- 2: period '.'
-- 3: end of string '\0'
-- 4: other characters
+- 0: '+' или '-'
+- 1: цифра ('0' - '9')
+- 2: точка '.'
+- 3: конец строки '\0'
+- 4: другие символы
 
-The state diagram is as follows.
+Диаграмма состояний выглядит следующим образом.
 
 ![state diagram of a numeric string](../image/state_diagram.png){width=12cm height=9cm}
 
-The state matrix is:
+Матрица состояний:
 
 |state＼input|0 |1 |2 |3 |4 |
 |:-----------|:-|:-|:-|:-|:-|
@@ -93,75 +93,75 @@ The state matrix is:
 |2           |6 |2 |3 |4 |6 |
 |3           |6 |3 |6 |5 |6 |
 
-This state diagram doesn't support "1.23e5" style double (decimal floating point).
-If it is supported, the state diagram will be more complicated.
-(However, it will be a good practice for your programming skill.)
+Эта диаграмма состояний не поддерживает числа с плавающей точкой в стиле "1.23e5" (десятичная запись с экспонентой).
+Если бы это поддерживалось, диаграмма состояний была бы более сложной.
+(Однако это была бы хорошая практика для ваших навыков программирования.)
 
-## Header file
+## Заголовочный файл
 
-The header file of TNumStr is [`tnumstr.h`](tstr/tnumstr.h).
-It is in the `src/tstr` directory.
+Заголовочный файл TNumStr - это [`tnumstr.h`](tstr/tnumstr.h).
+Он находится в каталоге `src/tstr`.
 
 @@@include
 tstr/tnumstr.h
 @@@
 
-- 8: The macro `G_DECLARE_FINAL_TYPE` for TNumStr class.
-It is a child class of TStr and a final type class.
-- 11-15: These three enum data define the type of TNumStr string.
-  - `t_none`: No string is stored or the string isn't a numeric string.
-  - `t_int`: The string expresses an integer
-  - `t_double`: The string expresses an real number, which is double type in C language.
-- 18-19: The public function `t_num_str_get_string_type` returns the type of the string TStrNum object has.
-The returned value is `t_none`, `t_int` or `t_double`.
-- 22-30: Setter and getter from/to a TNumber object.
-- 33-37: Functions to create new TNumStr objects.
+- 8: Макрос `G_DECLARE_FINAL_TYPE` для класса TNumStr.
+Это дочерний класс TStr и финальный тип класса.
+- 11-15: Эти три enum-данные определяют тип строки TNumStr.
+  - `t_none`: Строка не сохранена или строка не является числовой строкой.
+  - `t_int`: Строка выражает целое число
+  - `t_double`: Строка выражает вещественное число, которое является типом double в языке C.
+- 18-19: Публичная функция `t_num_str_get_string_type` возвращает тип строки, которую имеет объект TStrNum.
+Возвращаемое значение - `t_none`, `t_int` или `t_double`.
+- 22-30: Сеттер и геттер из/в объект TNumber.
+- 33-37: Функции для создания новых объектов TNumStr.
 
-## C file
+## C файл
 
-The C file of TNumStr is [`tnumstr.c`](tstr/tnumstr.c).
-It is in the `src/tstr` directory.
+C файл TNumStr - это [`tnumstr.c`](tstr/tnumstr.c).
+Он находится в каталоге `src/tstr`.
 
 @@@include
 tstr/tnumstr.c
 @@@
 
-- 9-12: TNumStr structure has its parent "TStr" and int type "type" members.
-So, TNumStr instance holds a string, which is placed in the parent's private area, and a type.
-- 14: `G_DEFINE_TYPE` macro.
-- 16- 54: The function `t_num_str_string_type` checks the given string and returns `t_int`, `t_double` or `t_none`.
-If the string is NULL or an non-numeric string, `t_none` will be returned.
-The check algorithm is explained in the first subsection "Verification of a numeric string".
-- 60-64: The function `t_num_str_real_set_string` sets TNumStr's string and its type.
-This is a body of the class method pointed by `set_string` member of the class structure.
-The class method is initialized in the class initialization function `t_num_str_class_init`.
-- 66-69: The instance initialization function `t_num_str_init` sets the type to `t_none`
-because its parent initialization function set the pointer `priv->string` to NULL.
-- 71-76: The class initialization function `t_num_str_class_init` assigns `t_num_str_real_set_string` to the member `set_string`.
-Therefore, the function `t_str_set_string` calls `t_num_str_real_set_string`, which sets not only the string but also the type.
-The function `g_object_set` also calls it and sets both the string and type.
-- 78-83: The public function `t_num_str_get_string_type` returns the type of the string.
-- 86-113: Setter and getter.
-The setter sets the numeric string from a TNumber object.
-And the getter returns a TNumber object.
-- 117-131: These two functions create TNumStr instances.
+- 9-12: Структура TNumStr имеет родительский член "TStr" и член типа int "type".
+Таким образом, экземпляр TNumStr содержит строку, которая размещена в приватной области родителя, и тип.
+- 14: Макрос `G_DEFINE_TYPE`.
+- 16- 54: Функция `t_num_str_string_type` проверяет заданную строку и возвращает `t_int`, `t_double` или `t_none`.
+Если строка равна NULL или является нечисловой строкой, будет возвращено `t_none`.
+Алгоритм проверки объясняется в первом подразделе "Проверка числовой строки".
+- 60-64: Функция `t_num_str_real_set_string` устанавливает строку TNumStr и ее тип.
+Это тело метода класса, на который указывает член `set_string` структуры класса.
+Метод класса инициализируется в функции инициализации класса `t_num_str_class_init`.
+- 66-69: Функция инициализации экземпляра `t_num_str_init` устанавливает тип в `t_none`,
+потому что функция инициализации родителя установила указатель `priv->string` в NULL.
+- 71-76: Функция инициализации класса `t_num_str_class_init` присваивает `t_num_str_real_set_string` члену `set_string`.
+Поэтому функция `t_str_set_string` вызывает `t_num_str_real_set_string`, которая устанавливает не только строку, но и тип.
+Функция `g_object_set` также вызывает её и устанавливает как строку, так и тип.
+- 78-83: Публичная функция `t_num_str_get_string_type` возвращает тип строки.
+- 86-113: Сеттер и геттер.
+Сеттер устанавливает числовую строку из объекта TNumber.
+А геттер возвращает объект TNumber.
+- 117-131: Эти две функции создают экземпляры TNumStr.
 
-## Child class extends parent's function.
+## Дочерний класс расширяет функцию родителя.
 
-TNumStr is a child class of TStr, so it has all the TStr's public funftions.
+TNumStr является дочерним классом TStr, поэтому он имеет все публичные функции TStr.
 
 - `TStr *t_str_concat (TStr *self, TStr *other)`
 - `void t_str_set_string (TStr *self, const char *s)`
 - `char *t_str_get_string (TStr *self)`
 
-When you want to set a string to a TNumStr instance, you can use `t_str_set_string` function.
+Когда вы хотите установить строку для экземпляра TNumStr, вы можете использовать функцию `t_str_set_string`.
 
 ```c
 TNumStr *ns = t_num_str_new ();
 t_str_set_string (T_STR (ns), "123.456");
 ```
 
-TNumStr extends the function `t_str_set_string` and it sets not only a string but also the type for a TNumStr instance.
+TNumStr расширяет функцию `t_str_set_string` и устанавливает не только строку, но и тип для экземпляра TNumStr.
 
 ```c
 int t;
@@ -172,28 +172,28 @@ if (t == t_double) g_print ("t_double\n");
 // => t_double appears on your display
 ```
 
-TNumStr adds some public functions.
+TNumStr добавляет некоторые публичные функции.
 
 - `int t_num_str_get_string_type (TNumStr *self)`
 - `void t_num_str_set_from_t_number (TNumStr *self, TNumber *num)`
 - `TNumber *t_num_str_get_t_number (TNumStr *self)`
 
-A child class extends the parent class.
-So, a child is more specific and richer than the parent.
+Дочерний класс расширяет родительский класс.
+Таким образом, дочерний класс более специфичен и богаче, чем родительский.
 
-## Compilation and execution
+## Компиляция и выполнение
 
-There are `main.c`, `test1.c` and `test2.c` in `src/tstr` directory.
-Two programs `test1.c` and `test2.c` generates `_build/test1` and `_build/test2` respectively.
-They test `tstr.c` and `tnumstr.c`.
-If there are errors, messages will appear.
-Otherwise nothing appears.
+В каталоге `src/tstr` находятся `main.c`, `test1.c` и `test2.c`.
+Две программы `test1.c` и `test2.c` генерируют `_build/test1` и `_build/test2` соответственно.
+Они тестируют `tstr.c` и `tnumstr.c`.
+Если есть ошибки, появятся сообщения.
+В противном случае ничего не появится.
 
-The program `main.c` generates `_build/tnumstr`.
-It shows how TStr and TNumStr work.
+Программа `main.c` генерирует `_build/tnumstr`.
+Она показывает, как работают TStr и TNumStr.
 
-Compilation is done by usual way.
-First, change your current directory to `src/tstr`.
+Компиляция выполняется обычным способом.
+Сначала измените текущий каталог на `src/tstr`.
 
 ~~~
 $ cd src/tstr
@@ -220,14 +220,14 @@ abc => (null) => abc
 (null) => (null) => (null)
 ~~~
 
-The last part of `main.c` is conversion between TNumStr and TNumber.
-There are some difference between them because of the following two reasons.
+Последняя часть `main.c` представляет собой преобразование между TNumStr и TNumber.
+Между ними есть некоторые различия по следующим двум причинам.
 
-- floating point is rounded.
-It is not an exact value when the value has long figures.
-TNumStr "123.4567890123456789" is converted to TNumber 123.456789.
-- There are two or more string expression in floating points.
-TNumStr ".456" is converted to TNumber x, and x is converted to TNumStr "0.456000".
+- числа с плавающей точкой округляются.
+Это не точное значение, когда значение имеет длинные цифры.
+TNumStr "123.4567890123456789" преобразуется в TNumber 123.456789.
+- Существует два или более строковых представления для чисел с плавающей точкой.
+TNumStr ".456" преобразуется в TNumber x, а x преобразуется в TNumStr "0.456000".
 
-It is difficult to compare two TNumStr instances.
-The best way is to compare TNumber instances converted from TNumStr.
+Трудно сравнивать два экземпляра TNumStr.
+Лучший способ - сравнивать экземпляры TNumber, преобразованные из TNumStr.

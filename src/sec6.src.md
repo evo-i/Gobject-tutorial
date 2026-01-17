@@ -1,172 +1,172 @@
-# Derivable type and abstract type
+# Производный тип и абстрактный тип
 
-## Derivable type
+## Производный тип
 
-There are two kinds of types, final type and derivable type.
-Final type doesn't have any child object.
-Derivable type has child objects.
+Существует два вида типов: финальный тип и производный тип.
+Финальный тип не имеет дочерних объектов.
+Производный тип имеет дочерние объекты.
 
-The main difference between the two objects is their classes.
-Final type objects doesn't have its own class area.
-The only member of the class is its parent class.
+Основное различие между этими двумя объектами заключается в их классах.
+Объекты финального типа не имеют собственной области класса.
+Единственный член класса - это его родительский класс.
 
-Derivable object has its own area in the class.
-The class is open to its descendants.
+Производный объект имеет собственную область в классе.
+Класс открыт для своих потомков.
 
-`G_DECLARE_DERIVABLE_TYPE` is used to declare derivable type.
-It is written in a header file like this:
+`G_DECLARE_DERIVABLE_TYPE` используется для объявления производного типа.
+Он записывается в заголовочном файле следующим образом:
 
 ~~~C
 #define T_TYPE_NUMBER             (t_number_get_type ())
 G_DECLARE_DERIVABLE_TYPE (TNumber, t_number, T, NUMBER, GObject)
 ~~~
 
-## Abstract type
+## Абстрактный тип
 
-Abstract type doesn't have any instance.
-This type of object is derivable and its children can use functions and signals of the abstract object.
+Абстрактный тип не имеет экземпляров.
+Этот тип объекта является производным, и его потомки могут использовать функции и сигналы абстрактного объекта.
 
-The examples of this section are TNumber, TInt and TDouble object.
-TInt and TDouble have already been made in the previous section.
-They represent integer and floating point respectively.
-Numbers are more abstract than integer and floating point.
+Примерами этого раздела являются объекты TNumber, TInt и TDouble.
+TInt и TDouble уже были созданы в предыдущем разделе.
+Они представляют целые числа и числа с плавающей точкой соответственно.
+Числа более абстрактны, чем целые числа и числа с плавающей точкой.
 
-TNumber is an abstract object which represents numbers.
-TNumber is a parent object of TInt and TDouble.
-TNumber isn't instantiated because its type is abstract.
-When an instance has TInt or TDouble type, it is an instance of TNumber as well.
+TNumber - это абстрактный объект, который представляет числа.
+TNumber является родительским объектом для TInt и TDouble.
+TNumber не создается в виде экземпляра, потому что его тип абстрактный.
+Когда экземпляр имеет тип TInt или TDouble, он также является экземпляром TNumber.
 
-TInt and TDouble have five operations: addition, subtraction, multiplication, division and unary minus operation.
-Those operations can be defined on TNumber object.
+TInt и TDouble имеют пять операций: сложение, вычитание, умножение, деление и унарная операция минус.
+Эти операции могут быть определены для объекта TNumber.
 
-In this section we will define TNumber object and five functions above.
-In addition, `to_s` function will be added.
-It converts the value of TNumber into a string.
-It is like sprintf function.
-And we will rewrite TInt and TDouble to implement the functions.
+В этом разделе мы определим объект TNumber и пять функций выше.
+Кроме того, будет добавлена функция `to_s`.
+Она преобразует значение TNumber в строку.
+Это похоже на функцию sprintf.
+И мы перепишем TInt и TDouble для реализации этих функций.
 
-## TNumber class
+## Класс TNumber
 
-`tnumber.h` is a header file for the TNumber class.
+`tnumber.h` - это заголовочный файл для класса TNumber.
 
 @@@include
 tnumber/tnumber.h
 @@@
 
-- 6: `G_DECLARE_DERIVABLE_TYPE` macro.
-This is similar to `G_DECLARE_FINAL_TYPE` macro.
-The difference is derivable or final.
-`G_DECLARE_DERIVABLE_TYPE` is expanded to:
-  - Declaration of `t_number_get_type ()` function. This function must be defined in `tnumber.c` file. The definition is usually done with `G_DEFINE_TYPE` or its family macros.
-  - Definition of TNumber instance, whose member is its parent only.
-  - Declaration of TNumberClass. It should be defined later in the header file.
-  - Convenience macros `T_NUMBER` (cast to instance), `T_NUMBER_CLASS` (cast to class), `T_IS_NUMBER` (instance check), `T_IS_NUMBER_CLASS` (class check) and `T_NUMBER_GET_CLASS` are defined.
-  - `g_autoptr()` support.
-- 8-18: Definition of the structure of TNumberClass.
-- 10-15: These are pointers to functions.
-They are called class methods or virtual functions.
-They are expected to be overridden in the descendant object.
-The methods are five arithmetic operators and `to_s` function.
-`to_s` function is similar to sprintf function.
-- 17: A pointer to the default signal handler of "div-by-zero" signal.
-The offset of this pointer is given to `g_signal_new` as an argument.
-- 22-38: Functions. They are public.
+- 6: Макрос `G_DECLARE_DERIVABLE_TYPE`.
+Он похож на макрос `G_DECLARE_FINAL_TYPE`.
+Различие в том, производный тип или финальный.
+`G_DECLARE_DERIVABLE_TYPE` раскрывается в:
+  - Объявление функции `t_number_get_type ()`. Эта функция должна быть определена в файле `tnumber.c`. Определение обычно делается с помощью макроса `G_DEFINE_TYPE` или его семейства макросов.
+  - Определение экземпляра TNumber, единственным членом которого является только его родитель.
+  - Объявление TNumberClass. Он должен быть определен позже в заголовочном файле.
+  - Определяются вспомогательные макросы `T_NUMBER` (приведение к экземпляру), `T_NUMBER_CLASS` (приведение к классу), `T_IS_NUMBER` (проверка экземпляра), `T_IS_NUMBER_CLASS` (проверка класса) и `T_NUMBER_GET_CLASS`.
+  - Поддержка `g_autoptr()`.
+- 8-18: Определение структуры TNumberClass.
+- 10-15: Это указатели на функции.
+Они называются методами класса или виртуальными функциями.
+Ожидается, что они будут переопределены в объекте-потомке.
+Методы - это пять арифметических операторов и функция `to_s`.
+Функция `to_s` похожа на функцию sprintf.
+- 17: Указатель на обработчик сигнала "div-by-zero" по умолчанию.
+Смещение этого указателя передается в `g_signal_new` в качестве аргумента.
+- 22-38: Функции. Они публичные.
 
-`tnumber.c` is as follows.
+`tnumber.c` выглядит следующим образом.
 
 @@@include
 tnumber/tnumber.c
 @@@
 
-- 5: `G_DEFINE_ABSTRACT_TYPE` macro.
-This macro is used to define an abstract type object.
-Abstract type isn't instantiated.
-This macro is expanded to:
-  - Declaration of `t_number_init ()` function.
-  - Declaration of `t_number_class_init ()` function.
-  - Definition of `t_number_get_type ()` function.
-  - Definition of `t_number_parent_class` static variable that points the parent class.
-- 3, 7-10, 26-35: Defines division-by-zero signal.
-The function `div_by_zero_default_cb` is a default handler of "div-by-zero" signal.
-Default handler doesn't have user data parameter.
-The function `g_signal_new` is used instead of `g_signal_new_class_handler`.
-It specifies a handler as the offset from the top of the class to the pointer to the handler.
-- 12-36: The class initialization function `t_number_class_init`.
-- 16-21: These class methods are virtual functions.
-They are expected to be overridden in the descendant object of TNumber.
-NULL is assigned here so that nothing happens when the methods are called.
-- 23: Assigns the address of the function `dev_by_zero_default_cb` to `class->div_by_zero`.
-This is the default handler of "div-by-zero" signal.
-- 38-40: `t_number_init` is a initialization function for an instance.
-But abstract object isn't instantiated.
-So, nothing is done in this function.
-But you can't leave out the definition of this function.
-- 42-98: Public functions.
-These functions just call the corresponding class methods if the pointer to the class method is not NULL.
+- 5: Макрос `G_DEFINE_ABSTRACT_TYPE`.
+Этот макрос используется для определения объекта абстрактного типа.
+Абстрактный тип не создается в виде экземпляра.
+Этот макрос раскрывается в:
+  - Объявление функции `t_number_init ()`.
+  - Объявление функции `t_number_class_init ()`.
+  - Определение функции `t_number_get_type ()`.
+  - Определение статической переменной `t_number_parent_class`, которая указывает на родительский класс.
+- 3, 7-10, 26-35: Определяет сигнал деления на ноль.
+Функция `div_by_zero_default_cb` является обработчиком по умолчанию для сигнала "div-by-zero".
+Обработчик по умолчанию не имеет параметра пользовательских данных.
+Используется функция `g_signal_new` вместо `g_signal_new_class_handler`.
+Она указывает обработчик как смещение от начала класса до указателя на обработчик.
+- 12-36: Функция инициализации класса `t_number_class_init`.
+- 16-21: Эти методы класса являются виртуальными функциями.
+Ожидается, что они будут переопределены в объекте-потомке TNumber.
+Здесь присваивается NULL, чтобы ничего не происходило при вызове методов.
+- 23: Присваивает адрес функции `dev_by_zero_default_cb` в `class->div_by_zero`.
+Это обработчик по умолчанию для сигнала "div-by-zero".
+- 38-40: `t_number_init` - это функция инициализации экземпляра.
+Но абстрактный объект не создается в виде экземпляра.
+Поэтому в этой функции ничего не делается.
+Но нельзя опускать определение этой функции.
+- 42-98: Публичные функции.
+Эти функции просто вызывают соответствующие методы класса, если указатель на метод класса не равен NULL.
 
-## TInt object.
+## Объект TInt.
 
-`tint.h` is a header file of the TInt class.
-TInt is a child class of TNumber.
+`tint.h` - это заголовочный файл класса TInt.
+TInt является дочерним классом TNumber.
 
 @@@include
 tnumber/tint.h
 @@@
 
-- 9-13:Declares public functions.
-Arithmetic functions and `to_s` are declared in TNumber, so TInt doesn't declare those functions.
-Only instance creation functions are declared.
+- 9-13: Объявляет публичные функции.
+Арифметические функции и `to_s` объявлены в TNumber, поэтому TInt не объявляет эти функции.
+Объявлены только функции создания экземпляров.
 
-The C file `tint.c` implements virtual functions (class methods).
-And the pointers of the methods in TNumberClass are rewritten here.
+Файл C `tint.c` реализует виртуальные функции (методы класса).
+И указатели методов в TNumberClass переписываются здесь.
 
 @@@include
 tnumber/tint.c
 @@@
 
-- 5-6, 15-33, 127-130: Definition of the property "value".
-This is the same as before.
-- 8-11: Definition of the structure of TInt.
-This must be defined before `G_DEFINE_TYPE`.
-- 13: `G_DEFINE_TYPE` macro.
-This macro expands to:
-  - Declaration of `t_int_init ()` function.
-  - Definition of `t_int_get_type ()` function.
-  - Definition of `t_int_parent_class` static variable which points the parent class.
+- 5-6, 15-33, 127-130: Определение свойства "value".
+Это то же самое, что и раньше.
+- 8-11: Определение структуры TInt.
+Это должно быть определено перед `G_DEFINE_TYPE`.
+- 13: Макрос `G_DEFINE_TYPE`.
+Этот макрос раскрывается в:
+  - Объявление функции `t_int_init ()`.
+  - Определение функции `t_int_get_type ()`.
+  - Определение статической переменной `t_int_parent_class`, которая указывает на родительский класс.
 - 35-37: `t_int_init`.
-- 41-112: These functions are connected to the class method pointers in TIntClass.
-They are the implementation of the virtual functions defined in `tnumber.c`.
-- 41-50: Defines a macro used in `t_int_add`, `t_int_sub` and `t_int_mul`.
-This macro is similar to `t_int_div` function.
-Refer to the explanation below for `t_int_div`.
-- 52-71: The functions `t_int_add`, `t_int_sub` and `t_int_mul`.
-The macro `t_int_binary_op` is used.
-- 73-95: The function `t_int_div`.
-The first argument `self` is the object on which the function is called.
-The second argument `other` is another TNumber object.
-It can be TInt or TDouble.
-If it is TDouble, its value is casted to int before the division is performed.
-If the divisor (`other`) is zero, "div-by-zero" signal is emitted.
-The signal is defined in TNumber, so TInt doesn't know the signal id.
-Therefore, the emission is done with `g_signal_emit_by_name` instead of `g_signal_emit`.
-The return value of `t_int_div` is TNumber type object
-However, because TNumber is abstract, the actual type of the object is TInt.
-- 97-102: A function for unary minus operator.
-- 104-112: The function `to_s`. This function converts int to string.
-For example, if the value of the object is 123, then the result is a string "123".
-The caller should free the string if it becomes useless.
-- 114- 131: The class initialization function `t_int_class_init`.
-- 120-125: The class methods are overridden.
-For example, if `t_number_add` is called on a TInt object, then the function calls the class method `*tnumber_class->add`.
-The pointer points `t_int_add` function.
-Therefore, `t_int_add` is finally called.
-- 133-147: Instance creation functions are the same as before.
+- 41-112: Эти функции связаны с указателями на методы класса в TIntClass.
+Они являются реализацией виртуальных функций, определенных в `tnumber.c`.
+- 41-50: Определяет макрос, используемый в `t_int_add`, `t_int_sub` и `t_int_mul`.
+Этот макрос похож на функцию `t_int_div`.
+См. объяснение ниже для `t_int_div`.
+- 52-71: Функции `t_int_add`, `t_int_sub` и `t_int_mul`.
+Используется макрос `t_int_binary_op`.
+- 73-95: Функция `t_int_div`.
+Первый аргумент `self` - это объект, для которого вызывается функция.
+Второй аргумент `other` - это другой объект TNumber.
+Это может быть TInt или TDouble.
+Если это TDouble, его значение приводится к int перед выполнением деления.
+Если делитель (`other`) равен нулю, испускается сигнал "div-by-zero".
+Сигнал определен в TNumber, поэтому TInt не знает идентификатор сигнала.
+Поэтому испускание выполняется с помощью `g_signal_emit_by_name` вместо `g_signal_emit`.
+Возвращаемое значение `t_int_div` - это объект типа TNumber
+Однако, поскольку TNumber является абстрактным, фактический тип объекта - TInt.
+- 97-102: Функция для унарного оператора минус.
+- 104-112: Функция `to_s`. Эта функция преобразует int в строку.
+Например, если значение объекта равно 123, то результатом будет строка "123".
+Вызывающая сторона должна освободить строку, если она становится ненужной.
+- 114- 131: Функция инициализации класса `t_int_class_init`.
+- 120-125: Методы класса переопределяются.
+Например, если `t_number_add` вызывается для объекта TInt, то функция вызывает метод класса `*tnumber_class->add`.
+Указатель указывает на функцию `t_int_add`.
+Следовательно, в конечном итоге вызывается `t_int_add`.
+- 133-147: Функции создания экземпляров такие же, как и раньше.
 
-## TDouble object.
+## Объект TDouble.
 
-TDouble object is defined with `tdouble.h` and `tdouble.c`.
-The definition is very similar to TInt.
-So, this subsection just shows the contents of the files.
+Объект TDouble определяется с помощью `tdouble.h` и `tdouble.c`.
+Определение очень похоже на TInt.
+Поэтому этот подраздел просто показывает содержимое файлов.
 
 tdouble.h
 
@@ -182,34 +182,34 @@ tnumber/tdouble.c
 
 ## main.c
 
-`main.c` is a simple program to test the objects.
+`main.c` - это простая программа для тестирования объектов.
 
 @@@include
 tnumber/main.c
 @@@
 
-- 6-20: "notify" handler.
-This handler is upgraded to support both TInt and TDouble.
-- 22-71: The function `main`.
-- 30-31: Connects the notify signals on `i` (TInt) and `d` (TDouble).
-- 33-34: Set "value" properties on `i` and `d`.
-- 36: Add `d` to `i`.
-The answer is TInt object.
-- 47: Add `i` to `d`.
-The answer is TDouble object.
-The addition of two TNumber objects isn't commutative because the type of the result will be different if the two objects are exchanged.
-- 56-63: Tests division by zero signal.
+- 6-20: Обработчик "notify".
+Этот обработчик улучшен для поддержки как TInt, так и TDouble.
+- 22-71: Функция `main`.
+- 30-31: Подключает сигналы notify к `i` (TInt) и `d` (TDouble).
+- 33-34: Устанавливает свойства "value" для `i` и `d`.
+- 36: Добавить `d` к `i`.
+Ответ - объект TInt.
+- 47: Добавить `i` к `d`.
+Ответ - объект TDouble.
+Сложение двух объектов TNumber не является коммутативным, потому что тип результата будет другим, если два объекта поменять местами.
+- 56-63: Тестирует сигнал деления на ноль.
 
-## Compilation and execution
+## Компиляция и выполнение
 
-The source files are located under [src/tnumber](tnumber).
-The file `meson.buld`, which controls the compilation process, is as follows.
+Исходные файлы находятся в [src/tnumber](tnumber).
+Файл `meson.buld`, который управляет процессом компиляции, выглядит следующим образом.
 
 @@@include
 tnumber/meson.build
 @@@
 
-Compilation and execution is done by the usual way.
+Компиляция и выполнение выполняются обычным способом.
 
 ~~~
 $ cd src/tnumber
@@ -218,7 +218,7 @@ $ ninja -C _build
 $ _build/tnumber
 ~~~
 
-Then the following is shown on the display.
+Затем на дисплее отображается следующее.
 
 ~~~
 Property "value" is set to 100.
@@ -230,51 +230,51 @@ Property "value" is set to 0.000000.
 Error: division by zero.
 ~~~
 
-The two answers are different because of the different types.
+Два ответа разные из-за разных типов.
 
-This section has shown a simple example of derivable and abstract class.
-You can define your derivable object like this.
-If your object isn't abstract, use `G_DEFINE_TYPE` instead of `G_DEFINE_ABSTRACT_TYPE`.
-And you need one more thing, how to manage private data in your derivable object.
-There is a tutorial in [GObject API Reference](https://docs.gtk.org/gobject/tutorial.html#gobject-tutorial).
-See the tutorial for learning derivable object.
+Этот раздел показал простой пример производного и абстрактного класса.
+Вы можете определить свой производный объект таким образом.
+Если ваш объект не абстрактный, используйте `G_DEFINE_TYPE` вместо `G_DEFINE_ABSTRACT_TYPE`.
+И вам нужно еще одно - как управлять приватными данными в вашем производном объекте.
+Есть руководство в [GObject API Reference](https://docs.gtk.org/gobject/tutorial.html#gobject-tutorial).
+См. руководство для изучения производного объекта.
 
-It is also good to see source files in GTK.
+Также полезно посмотреть исходные файлы в GTK.
 
-## Class initialization process
+## Процесс инициализации класса
 
-### Initialization process of TNumberClass
+### Процесс инициализации TNumberClass
 
-Because TNumber is an abstract object, you cannot instantiate it directly.
-And you cannot create the TNumber class as well.
-But when you create its descendant instance, TNumber class is made and initialized.
-First call for `g_object_new (T_TYPE_INT, ...)` or `g_object_new (T_TYPE_DOUBLE, ...)` creates and initializes TNumberClass if the class doesn't exist.
-After that, TIntClass or TDoubleClass is created and followed by the creation for TInt or TDouble instance respectively.
+Поскольку TNumber является абстрактным объектом, вы не можете создать его экземпляр напрямую.
+И вы также не можете создать класс TNumber.
+Но когда вы создаете экземпляр его потомка, класс TNumber создается и инициализируется.
+Первый вызов `g_object_new (T_TYPE_INT, ...)` или `g_object_new (T_TYPE_DOUBLE, ...)` создает и инициализирует TNumberClass, если класс не существует.
+После этого создается TIntClass или TDoubleClass, и затем следует создание экземпляра TInt или TDouble соответственно.
 
-And the initialization process for the TNumber class is as follows.
+И процесс инициализации класса TNumber выглядит следующим образом.
 
-1. GObjectClass has been initialized before the function `main` starts.
-2. Memory is allocated for TNumberClass.
-3. The parent (GObjectClass) part of the class is copied from GObjectClass.
-4. The class initialization function `t_number_class_init` is called.
-It initializes class methods (Pointers to the class methods) and a default signal handler.
+1. GObjectClass был инициализирован до запуска функции `main`.
+2. Выделяется память для TNumberClass.
+3. Родительская (GObjectClass) часть класса копируется из GObjectClass.
+4. Вызывается функция инициализации класса `t_number_class_init`.
+Она инициализирует методы класса (указатели на методы класса) и обработчик сигнала по умолчанию.
 
-The diagram below shows the process.
+Диаграмма ниже показывает процесс.
 
 ![TNumberClass initialization](../image/tnumberclass_init.png){width=12cm height=9cm}
 
-### Initialization process of TIntClass
+### Процесс инициализации TIntClass
 
-1. TNumberClass has been initialized before the initialization of TIntClass starts.
-2. First call for `g_object_new (T_TYPE_INT, ...)` initializes TIntClass.
-And the initialization process is as follows.
-3. Memory is allocated for TIntClass.
-TIntClass doesn't have its own area.
-Therefore its structure is the same as its parent class (TNumberClass).
-4. The parent (TNumberClass) part of the class (This is the same as whole TIntClass) is copied from TNumberClass.
-5. The class initialization function `t_int_class_init` is called.
-It overrides class methods from TNumber, `set_property` and `get_property`.
+1. TNumberClass был инициализирован до начала инициализации TIntClass.
+2. Первый вызов `g_object_new (T_TYPE_INT, ...)` инициализирует TIntClass.
+И процесс инициализации выглядит следующим образом.
+3. Выделяется память для TIntClass.
+TIntClass не имеет собственной области.
+Следовательно, его структура такая же, как у его родительского класса (TNumberClass).
+4. Родительская (TNumberClass) часть класса (это то же самое, что и весь TIntClass) копируется из TNumberClass.
+5. Вызывается функция инициализации класса `t_int_class_init`.
+Она переопределяет методы класса из TNumber, `set_property` и `get_property`.
 
-The diagram below shows the process.
+Диаграмма ниже показывает процесс.
 
 ![TIntClass initialization](../image/tintclass_init.png){width=12cm height=9cm}

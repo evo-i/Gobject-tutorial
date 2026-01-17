@@ -1,43 +1,43 @@
-# Signals
+# Сигналы
 
-## Signals
+## Сигналы
 
-Signals provide a means of communication between objects.
-Signals are emitted when something happens or completes.
+Сигналы обеспечивают средство коммуникации между объектами.
+Сигналы испускаются, когда что-то происходит или завершается.
 
-The steps to program a signal is shown below. 
+Шаги для программирования сигнала показаны ниже.
 
-1. Register a signal.
-A signal belongs to an object, so the registration is done in the class initialization function of the object.
-2. Write a signal handler.
-A signal handler is a function that is invoked when the signal is emitted.
-3. Connect the signal and handler.
-Signals are connected to handlers with `g_connect_signal` or its family functions.
-4. Emit the signal.
+1. Зарегистрировать сигнал.
+Сигнал принадлежит объекту, поэтому регистрация выполняется в функции инициализации класса объекта.
+2. Написать обработчик сигнала.
+Обработчик сигнала — это функция, которая вызывается при испускании сигнала.
+3. Связать сигнал и обработчик.
+Сигналы связываются с обработчиками с помощью `g_connect_signal` или родственных функций.
+4. Испустить сигнал.
 
-Step one and Four are done on the object to which the signal belongs.
-Step three is usually done outside the object.
+Шаги один и четыре выполняются на объекте, к которому принадлежит сигнал.
+Шаг три обычно выполняется вне объекта.
 
-The process of signals is complicated and it takes long to explain all the features.
-The contents of this section is limited to the minimum things to write a simple signal and not necessarily accurate.
-If you need an accurate information, refer to GObject API reference.
-There are four parts which describe signals.
+Процесс работы с сигналами сложен, и требуется много времени, чтобы объяснить все возможности.
+Содержание этого раздела ограничено минимальными вещами для написания простого сигнала и не обязательно точно.
+Если вам нужна точная информация, обратитесь к справочнику GObject API.
+Есть четыре части, которые описывают сигналы.
 
 - [Type System Concepts -- signals](https://docs.gtk.org/gobject/concepts.html#signals)
 - [Funcions (g\_signal\_XXX series)](https://docs.gtk.org/gobject/#functions)
 - [Funcions Macros (g\_signal\_XXX series)](https://docs.gtk.org/gobject/#function_macros)
 - [GObject Tutorial -- How to create and use signals](https://docs.gtk.org/gobject/tutorial.html#how-to-create-and-use-signals)
 
-## Signal registration
+## Регистрация сигнала
 
-An example in this section is a signal emitted when division-by-zero happens.
-First, we need to determine the name of the signal.
-Signal name consists of letters, digits, dash (`-`) and underscore (`_`).
-The first character of the name must be a letter.
-So, a string "div-by-zero" is appropriate for the signal name.
+Пример в этом разделе — это сигнал, испускаемый при делении на ноль.
+Сначала нам нужно определить имя сигнала.
+Имя сигнала состоит из букв, цифр, дефиса (`-`) и подчеркивания (`_`).
+Первый символ имени должен быть буквой.
+Таким образом, строка "div-by-zero" подходит для имени сигнала.
 
-There are four functions to register a signal.
-We will use [`g_signal_new`](https://docs.gtk.org/gobject/func.signal_new.html) for "div-by-zero" signal.
+Существует четыре функции для регистрации сигнала.
+Мы будем использовать [`g_signal_new`](https://docs.gtk.org/gobject/func.signal_new.html) для сигнала "div-by-zero".
 
 ~~~C
 guint
@@ -53,8 +53,8 @@ g_signal_new (const gchar *signal_name,
               ...);
 ~~~
 
-It needs a lot to explain each parameter.
-At present I just show you `g_signal_new` function call extracted from `tdouble.c`.
+Требуется много времени, чтобы объяснить каждый параметр.
+В настоящий момент я просто покажу вам вызов функции `g_signal_new`, извлеченный из `tdouble.c`.
 
 ~~~C
 t_double_signal =
@@ -70,59 +70,59 @@ g_signal_new ("div-by-zero",
               );
 ~~~
 
-- `t_double_signal` is a static guint variable.
-The type guint is the same as unsigned int.
-It is set to the signal id returned by the function `g_signal_new`.
-- The second parameter is the type (GType) of the object the signal belongs to.
-`G_TYPE_FROM_CLASS (class)` returns the type corresponds to the class (`class` is a pointer to the class of the object).
-- The third parameter is a signal flag.
-Lots of pages are necessary to explain this flag.
-So, I want leave them out now.
-The argument above can be used in many cases.
-The definition is described in the [GObject API Reference -- SignalFlags](https://docs.gtk.org/gobject/flags.SignalFlags.html).
-- The return type is G_TYPE_NONE which means no value is returned by the signal handler.
-- `n_params` is a number of parameters.
-This signal doesn't have parameters, so it is zero.
+- `t_double_signal` — это статическая переменная типа guint.
+Тип guint — это то же самое, что unsigned int.
+Ей присваивается идентификатор сигнала, возвращаемый функцией `g_signal_new`.
+- Второй параметр — это тип (GType) объекта, к которому принадлежит сигнал.
+`G_TYPE_FROM_CLASS (class)` возвращает тип, соответствующий классу (`class` — это указатель на класс объекта).
+- Третий параметр — это флаг сигнала.
+Для объяснения этого флага необходимо много страниц.
+Поэтому я хочу пока опустить их.
+Приведенный выше аргумент может использоваться во многих случаях.
+Определение описано в [GObject API Reference -- SignalFlags](https://docs.gtk.org/gobject/flags.SignalFlags.html).
+- Тип возвращаемого значения — G_TYPE_NONE, что означает, что обработчик сигнала не возвращает значение.
+- `n_params` — это количество параметров.
+Этот сигнал не имеет параметров, поэтому это ноль.
 
-This function is located in the class initialization function (`t_double_class_init`).
+Эта функция расположена в функции инициализации класса (`t_double_class_init`).
 
-You can use other functions such as `g_signal_newv`.
-See [GObject API Reference](https://docs.gtk.org/gobject/func.signal_newv.html) for details.
+Вы можете использовать другие функции, такие как `g_signal_newv`.
+См. [GObject API Reference](https://docs.gtk.org/gobject/func.signal_newv.html) для получения подробной информации.
 
-## Signal handler
+## Обработчик сигнала
 
-Signal handler is a function that is called when the signal is emitted.
-The handler has two parameters.
+Обработчик сигнала — это функция, которая вызывается при испускании сигнала.
+Обработчик имеет два параметра.
 
-- The instance to which the signal belongs
-- A pointer to a user data which is given in the signal connection.
+- Экземпляр, к которому принадлежит сигнал
+- Указатель на пользовательские данные, которые передаются при подключении сигнала.
 
-The "div-by-zero" signal doesn't need user data.
+Сигнал "div-by-zero" не требует пользовательских данных.
 
 ~~~C
 void div_by_zero_cb (TDouble *self, gpointer user_data) { ... ... ...}
 ~~~
 
-The first argument `self` is the instance on which the signal is emitted.
-You can leave out the second parameter.
+Первый аргумент `self` — это экземпляр, на котором испускается сигнал.
+Вы можете опустить второй параметр.
 
 ~~~C
 void div_by_zero_cb (TDouble *self) { ... ... ...}
 ~~~
 
-If a signal has parameters, the parameters are between the instance and the user data.
-For example, the handler of "window-added" signal on GtkApplication is:
+Если сигнал имеет параметры, параметры находятся между экземпляром и пользовательскими данными.
+Например, обработчик сигнала "window-added" для GtkApplication:
 
 ~~~C
 void window_added (GtkApplication* self, GtkWindow* window, gpointer user_data);
 ~~~
 
-The second argument `window` is the parameter of the signal.
-The "window-added" signal is emitted when a new window is added to the application.
-The parameter `window` points a newly added window.
-See [GTK API reference](https://docs.gtk.org/gtk4/signal.Application.window-added.html) for further information.
+Второй аргумент `window` — это параметр сигнала.
+Сигнал "window-added" испускается, когда новое окно добавляется в приложение.
+Параметр `window` указывает на вновь добавленное окно.
+См. [GTK API reference](https://docs.gtk.org/gtk4/signal.Application.window-added.html) для получения дополнительной информации.
 
-The handler of "div-by-zero" signal just shows an error message.
+Обработчик сигнала "div-by-zero" просто показывает сообщение об ошибке.
 
 ~~~C
 static void
@@ -131,25 +131,25 @@ div_by_zero_cb (TDouble *self, gpointer user_data) {
 }
 ~~~
 
-## Signal connection
+## Подключение сигнала
 
-A signal and a handler are connected with the function [`g_signal_connect`](https://docs.gtk.org/gobject/func.signal_connect.html).
+Сигнал и обработчик связываются с помощью функции [`g_signal_connect`](https://docs.gtk.org/gobject/func.signal_connect.html).
 
 ~~~C
 g_signal_connect (self, "div-by-zero", G_CALLBACK (div_by_zero_cb), NULL);
 ~~~
 
-- `self` is an instance the signal belongs to.
-- The second argument is the signal name.
-- The third argument is the signal handler.
-It must be casted by `G_CALLBACK`.
-- The last argument is an user data.
-The signal doesn't need a user data, so NULL is assigned.
+- `self` — это экземпляр, к которому принадлежит сигнал.
+- Второй аргумент — это имя сигнала.
+- Третий аргумент — это обработчик сигнала.
+Он должен быть приведен с помощью `G_CALLBACK`.
+- Последний аргумент — это пользовательские данные.
+Сигнал не требует пользовательских данных, поэтому присваивается NULL.
 
-## Signal emission
+## Испускание сигнала
 
-Signals are emitted on the object.
-The following is a part of `tdouble.c`.
+Сигналы испускаются на объекте.
+Ниже приведена часть `tdouble.c`.
 
 ~~~C
 TDouble *
@@ -165,22 +165,22 @@ t_double_div (TDouble *self, TDouble *other) {
 }
 ~~~
 
-If the divisor is zero, the signal is emitted.
-[`g_signal_emit`](https://docs.gtk.org/gobject/func.signal_emit.html) has three parameters.
+Если делитель равен нулю, сигнал испускается.
+[`g_signal_emit`](https://docs.gtk.org/gobject/func.signal_emit.html) имеет три параметра.
 
-- The first parameter is the instance that emits the signal.
-- The second parameter is the signal id.
-Signal id is the value returned by the function `g_signal_new`.
-- The third parameter is a detail.
-"div-by-zero" signal doesn't have a detail, so the argument is zero.
-Detail isn't explained in this section but usually you can put zero as a third argument.
-If you want to know the details, refer to [GObject API Reference -- Signal Detail](https://docs.gtk.org/gobject/concepts.html#the-detail-argument).
+- Первый параметр — это экземпляр, который испускает сигнал.
+- Второй параметр — это идентификатор сигнала.
+Идентификатор сигнала — это значение, возвращаемое функцией `g_signal_new`.
+- Третий параметр — это детализация.
+Сигнал "div-by-zero" не имеет детализации, поэтому аргумент равен нулю.
+Детализация не объясняется в этом разделе, но обычно вы можете поставить ноль в качестве третьего аргумента.
+Если вы хотите узнать подробности, обратитесь к [GObject API Reference -- Signal Detail](https://docs.gtk.org/gobject/concepts.html#the-detail-argument).
 
-If a signal has parameters, they are fourth and subsequent arguments.
+Если сигнал имеет параметры, они являются четвертым и последующими аргументами.
 
-## Example
+## Пример
 
-A sample program is in [src/tdouble3](tdouble3).
+Пример программы находится в [src/tdouble3](tdouble3).
 
 tdouble.h
 
@@ -200,15 +200,15 @@ main.c
 tdouble3/main.c
 @@@
 
-Change your current directory to src/tdouble3 and type as follows.
+Перейдите в каталог src/tdouble3 и наберите следующее.
 
 ~~~
 $ meson setup _build
 $ ninja -C _build
 ~~~
 
-Then, Executable file `tdouble` is created in the `_build` directory.
-Execute it.
+Затем исполняемый файл `tdouble` создается в каталоге `_build`.
+Выполните его.
 
 ~~~
 $ _build/tdouble
@@ -222,14 +222,14 @@ Error: division by zero.
 -10.000000 = -10.000000
 ~~~
 
-## Default signal handler
+## Обработчик сигнала по умолчанию
 
-You may have thought that it was strange that the error message was set in `main.c`.
-Indeed, the error happens in `tdouble.c` so the message should been managed by `tdouble.c` itself.
-GObject system has a default signal handler that is set in the object itself.
-A default signal handler is also called "default handler" or "object method handler".
+Возможно, вы подумали, что странно, что сообщение об ошибке было установлено в `main.c`.
+Действительно, ошибка происходит в `tdouble.c`, поэтому сообщение должно управляться самим `tdouble.c`.
+Система GObject имеет обработчик сигнала по умолчанию, который устанавливается в самом объекте.
+Обработчик сигнала по умолчанию также называется "обработчик по умолчанию" или "обработчик метода объекта".
 
-You can set a default handler with `g_signal_new_class_handler`.
+Вы можете установить обработчик по умолчанию с помощью `g_signal_new_class_handler`.
 
 ~~~c
 guint
@@ -245,26 +245,26 @@ g_signal_new_class_handler (const gchar *signal_name,
                             ...);
 ~~~
 
-The difference from `g_signal_new` is the fourth parameter.
-`g_signal_new` sets a default handler with the offset of the function pointer in the class structure.
-If an object is derivable, it has its own class area, so you can set a default handler with `g_signal_new`.
-But a final type object doesn't have its own class area, so it's impossible to set a default handler with `g_signal_new`.
-That's the reason why we use `g_signal_new_class_handler`.
+Отличие от `g_signal_new` в четвертом параметре.
+`g_signal_new` устанавливает обработчик по умолчанию со смещением указателя на функцию в структуре класса.
+Если объект является производным, он имеет свою собственную область класса, поэтому вы можете установить обработчик по умолчанию с помощью `g_signal_new`.
+Но объект финального типа не имеет своей собственной области класса, поэтому невозможно установить обработчик по умолчанию с помощью `g_signal_new`.
+Вот почему мы используем `g_signal_new_class_handler`.
 
-The C file `tdouble.c` is changed like this.
-The function `div_by_zero_default_cb` is added and `g_signal_new_class_handler` replaces `g_signal_new`.
-Default signal handler doesn't have `user_data` parameter.
-A `user_data` parameter is set in the `g_signal_connect` family functions when a user connects their own signal handler to the signal.
-Default signal handler is managed by the instance, not a user.
-So no user data is given as an argument.
+Файл C `tdouble.c` изменен следующим образом.
+Функция `div_by_zero_default_cb` добавлена, и `g_signal_new_class_handler` заменяет `g_signal_new`.
+Обработчик сигнала по умолчанию не имеет параметра `user_data`.
+Параметр `user_data` устанавливается в функциях семейства `g_signal_connect`, когда пользователь подключает свой собственный обработчик сигнала к сигналу.
+Обработчик сигнала по умолчанию управляется экземпляром, а не пользователем.
+Поэтому никакие пользовательские данные не передаются в качестве аргумента.
 
 @@@include
 tdouble4/tdouble.c div_by_zero_default_cb t_double_class_init
 @@@
 
-`g_signal_connect` and `div_by_zero_cb` are removed from `main.c`.
+`g_signal_connect` и `div_by_zero_cb` удалены из `main.c`.
 
-Compile and execute it.
+Скомпилируйте и выполните.
 
 ~~~
 $ cd src/tdouble4; _build/tdouble
@@ -278,10 +278,10 @@ Error: division by zero.
 -10.000000 = -10.000000
 ~~~
 
-The source file is in the directory [src/tdouble4](tdouble4).
+Исходный файл находится в каталоге [src/tdouble4](tdouble4).
 
-If you want to connect your handler (user-provided handler) to the signal, you can still use `g_signal_connect`.
-Add the following in `main.c`.
+Если вы хотите подключить свой обработчик (предоставленный пользователем) к сигналу, вы все еще можете использовать `g_signal_connect`.
+Добавьте следующее в `main.c`.
 
 ~~~C
 static void
@@ -297,8 +297,8 @@ main (int argc, char **argv) {
 }
 ~~~
 
-Then, both the user-provided handler and default handler are called when the signal is emitted.
-Compile and execute it, then the following is shown on your display.
+Затем, когда сигнал испускается, вызываются и предоставленный пользователем обработчик, и обработчик по умолчанию.
+Скомпилируйте и выполните, затем на вашем дисплее будет показано следующее.
 
 ~~~
 10.000000 + 20.000000 = 30.000000
@@ -313,9 +313,9 @@ Error: division by zero.
 -10.000000 = -10.000000
 ~~~
 
-This tells us that the user-provided handler is called first, then the default handler is called.
-If you want your handler called after the default handler, then you can use `g_signal_connect_after`.
-Add the lines below to `main.c` again.
+Это говорит нам, что сначала вызывается предоставленный пользователем обработчик, затем вызывается обработчик по умолчанию.
+Если вы хотите, чтобы ваш обработчик вызывался после обработчика по умолчанию, вы можете использовать `g_signal_connect_after`.
+Добавьте строки ниже в `main.c` снова.
 
 ~~~C
 static void
@@ -331,7 +331,7 @@ main (int argc, char **argv) {
 }
 ~~~
 
-Compile and execute it, then:
+Скомпилируйте и выполните, затем:
 
 ~~~
 10.000000 + 20.000000 = 30.000000
@@ -348,19 +348,19 @@ Error has happened in main.c and an error message has been displayed.
 -10.000000 = -10.000000
 ~~~
 
-The source files are in [src/tdouble5](tdouble5).
+Исходные файлы находятся в [src/tdouble5](tdouble5).
 
-## Signal flag
+## Флаг сигнала
 
-The order that handlers are called is described in [GObject API Reference -- Sigmal emission](https://docs.gtk.org/gobject/concepts.html#signal-emission).
+Порядок вызова обработчиков описан в [GObject API Reference -- Sigmal emission](https://docs.gtk.org/gobject/concepts.html#signal-emission).
 
-The order depends on the signal flag which is set in `g_signal_new` or `g_signal_new_class_handler`.
-There are three flags which relate to the order of handlers' invocation.
+Порядок зависит от флага сигнала, который устанавливается в `g_signal_new` или `g_signal_new_class_handler`.
+Существует три флага, которые относятся к порядку вызова обработчиков.
 
-- `G_SIGNAL_RUN_FIRST`: the default handler is called before any user provided handler.
-- `G_SIGNAL_RUN_LAST`: the default handler is called after the normal user provided handler (not connected with `g_signal_connect_after`).
-- `G_SIGNAL_RUN_CLEANUP`: the default handler is called after any user provided handler.
+- `G_SIGNAL_RUN_FIRST`: обработчик по умолчанию вызывается перед любым предоставленным пользователем обработчиком.
+- `G_SIGNAL_RUN_LAST`: обработчик по умолчанию вызывается после обычного предоставленного пользователем обработчика (не подключенного с помощью `g_signal_connect_after`).
+- `G_SIGNAL_RUN_CLEANUP`: обработчик по умолчанию вызывается после любого предоставленного пользователем обработчика.
 
-`G_SIGNAL_RUN_LAST` is the most appropriate in many cases.
+`G_SIGNAL_RUN_LAST` является наиболее подходящим во многих случаях.
 
-Other signal flags are described in [GObject API Reference](https://docs.gtk.org/gobject/flags.SignalFlags.html).
+Другие флаги сигналов описаны в [GObject API Reference](https://docs.gtk.org/gobject/flags.SignalFlags.html).
